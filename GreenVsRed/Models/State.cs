@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace GreenVsRed.Models
 {
     class State : IState
     {
-        public State(IPoint point)
+        public State()
         {
-            this.Point = point;
 
-            this.Generation = new int[0][];
-            this.GenerationNext = new List<List<int>>();
         }
         public State(int matrixWidth, int matrixHeight, IPoint point, int rounds)
         {
@@ -19,11 +17,11 @@ namespace GreenVsRed.Models
             this.MatrixHeight = matrixHeight;
             this.Point = point;
             this.Rounds = rounds;
-            this.Generation = new int[matrixHeight][];
+            this.Generation = new List<List<int>>();
             this.GenerationNext = new List<List<int>>();
         }
 
-
+        
         public int MatrixWidth { get; private set; }
 
         public int MatrixHeight { get; private set; }
@@ -32,7 +30,7 @@ namespace GreenVsRed.Models
 
         public int Rounds { get; private set; }
 
-        public int[][] Generation { get; set; }
+        public List<List<int>> Generation { get; set; }
         public List<List<int>> GenerationNext { get; set; }
 
     }

@@ -7,7 +7,7 @@ namespace GreenVsRed
 {
     public interface IEngine
     {
-        IState state { get; set; }
+        
         void Run();
     }
 }

@@ -9,11 +9,9 @@ namespace GreenVsRed
     {
         public Engine()
         {
-            var point = new Point();
-            state = new State(0, 0, point, 10);
+            
         }
 
-        public IState state { get; set; }
 
         public void Run()
         {
@@ -36,23 +34,14 @@ namespace GreenVsRed
             {
                 try
                 {
+                    count++;
+                   var state = new MatrixState();
+
+                    
                     if (count == 5)
                     {
                         return;
                     }
-                    this.state = CommonMethods.InitialState();
-                    string m = "";
-                    foreach (var g in state.Generation)
-                    {
-                        if (g.Length > 0)
-                        {
-                            m += string.Join(',', g);
-                        }
-
-                    }
-
-                    Console.WriteLine(state.MatrixWidth + " - " + state.MatrixHeight + " - " + m + "-" + state.Point.CoordX + "-" + state.Point.CoordY + "-" + state.Rounds);
-                    count++;
                     //Initialize matrix
                     //Console.WriteLine("Engine");
                 }

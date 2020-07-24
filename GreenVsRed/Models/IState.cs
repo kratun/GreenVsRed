@@ -10,7 +10,7 @@ namespace GreenVsRed.Models
 
         int Rounds { get; }
 
-        int[][] Generation { get; set; }
+        List<List<int>> Generation { get; set; }
         List<List<int>> GenerationNext { get; set; }
     }
 }

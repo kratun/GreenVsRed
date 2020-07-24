@@ -6,8 +6,11 @@ namespace GreenVsRed.Common.Validations
 {
     public static class RegXPattern
     {
-        public const string FirstLineStartWithDigits = @"^[1-9]{1}[\W]+[0-9]+$";
+        public const string FirstLine = @"^^[\W]*[0-9]+[\W]*[,][\W]*[0-9]+[\W]*$";
 
         public const string AllowedDigitsInMatrix = "^[01]+$";
+
+        public const string TargetConditions = @"^[\W]*[0-9]+[\W]*[,][\W]*[0-9]+[\W]*[,][\W]*[0-9]+[\W]*$";
+
     }
 }
