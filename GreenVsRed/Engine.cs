@@ -42,8 +42,8 @@ namespace GreenVsRed
                     {
                         return;
                     }
-                    //Initialize matrix
-                    //Console.WriteLine("Engine");
+                    
+                    Console.WriteLine("All input is correct. Please wait for calculations!");
                 }
                 catch (Exception ex)
                 {
