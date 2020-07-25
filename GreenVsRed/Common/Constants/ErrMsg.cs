@@ -16,7 +16,7 @@ namespace GreenVsRed.Common.Constants
         public const string TargetConditionsException = "Error: Tagret condition missmatch. Please write three integers separated by comma \",\" - first targe point \"X\", then target point \"Y\" and rounds (how many times you want to change matrix)";
         public const string NotCorrectTargetPointY = "Error: Target point Y must be an integer between {0} and {1}";
         public const string NotCorrectTargetPointX = "Error: Target point X must be an integer between {0} and {1}";
-
+        public const string OutOfRangeTargetPoint = "Error: Target point [{0},{1}] is out of range.\nTarget point X must be an integer between {2} and {3}\nTarget point Y must be an integer between {4} and {5}";
 
     }
 }

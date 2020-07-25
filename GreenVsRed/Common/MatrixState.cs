@@ -29,7 +29,7 @@ namespace GreenVsRed.Common
                 var matrixHeight = matrixDimention.CoordY;
                 var matrixWidth = matrixDimention.CoordX;
                 
-                var generation = ReadMatrix(matrixWidth, matrixHeight);
+                //var generation = ReadMatrix(matrixWidth, matrixHeight);
                 
                 var pointCoordX =0;
                 var pointCoordY = 0;
@@ -90,7 +90,8 @@ namespace GreenVsRed.Common
                 .ToList();
 
             //Validate first line that contain three argument 
-            if (!Regex.IsMatch(input, RegXPattern.TargetConditions) || args.Count != GeneralConstants.MatrixDimension)
+            var isValidInput = Regex.IsMatch(input, RegXPattern.TargetConditions);
+            if (!isValidInput || args.Count != GeneralConstants.TargetConditionsCount)
             {
                 var errMsg = ErrMsg.TargetConditionsException;
                 throw new ArgumentException(errMsg);
@@ -98,18 +99,24 @@ namespace GreenVsRed.Common
 
             int coordX;
             //Validate Target Point X. Integer between Min Target Point X and Matrix Width
-            if (!int.TryParse(args[0], out coordX) || coordX < GeneralConstants.MinTargetPointX || coordX >= matrixWidth)
+            if (!int.TryParse(args[0], out coordX))
             {
                 var errMsg = string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth);
-                throw new ArgumentOutOfRangeException(nameof(coordX), errMsg);
+                throw new ArgumentException(nameof(coordX), errMsg);
             }
 
             int coordY;
             //Validate Target Point Y. Integer between Min Target Point Y and Matrix Width
-            if (!int.TryParse(args[1], out coordY) || coordY < GeneralConstants.MinTargetPointY || coordY >= matrixHeight)
+            if (!int.TryParse(args[1], out coordY))
             {
                 var errMsg = string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinMatrixSize, matrixHeight);
                 throw new ArgumentException(errMsg);
+            }
+
+            if (coordX < GeneralConstants.MinTargetPointX || coordX >= matrixWidth || coordY < GeneralConstants.MinTargetPointY || coordY >= matrixHeight)
+            {
+                var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX,coordY, GeneralConstants.MinTargetPointX, matrixWidth, GeneralConstants.MinMatrixSize, matrixHeight);
+                throw new ArgumentOutOfRangeException(nameof(coordX), errMsg);
             }
 
             int rounds;
