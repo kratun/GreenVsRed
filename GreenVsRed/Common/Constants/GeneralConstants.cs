@@ -12,7 +12,7 @@ namespace GreenVsRed.Common.Constants
 
         //Matrix dimensions
         public const string EnterMatrixDimensions = "Enter matrix dimensions \"width, height\": ";
-        public const string EnterMatrix = "Please enter on each {0} lines, {1} digits({2} for green or {3} for red)";
+        public const string EnterMatrix = "Please enter on each next {0} lines, {1} digits({2} for green or {3} for red)";
         public const string EnterMatrixRow = "Enter line {0}: ";
         public const int MatrixDimension = 2;
         public const int MinMatrixSize = 1;

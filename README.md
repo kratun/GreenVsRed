@@ -19,3 +19,8 @@ When the project is loaded press F5 button (if you use Visual Studio v 16.6.5) f
 ## Enjoy the game
 You can repeat the game as many times as you like.</br>
 The game will finish when you answer "No" to the question "Do you want to proceed?".</br>
+
+## Need Help
+If you have any questions about application or if you can not download video file, please contact me.</br>
+email: mitevdv@abv.bg</br>
+moobile: +359 889 188 779</br>
