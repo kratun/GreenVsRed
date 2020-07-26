@@ -3,7 +3,7 @@ Console Application that represent 2D matrix game.
 
 ## IDE
 ```
-Visual Studio v 16.6.5 or any other software that allows you to start .Net Core App 3.1 applications<br />
+Visual Studio v 16.6.5 or any other software that allows you to start .Net Core App 3.1 applications
 ```
 
 ## How to run
