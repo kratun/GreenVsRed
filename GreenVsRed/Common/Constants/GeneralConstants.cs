@@ -26,5 +26,16 @@ namespace GreenVsRed.Common.Constants
         public const int MaxRounds = int.MaxValue;
         public const int TargetConditionsCount = 3;
 
+        //Next Color constraints
+        public const int MaxCheckedRows = 3;
+        public const int MaxCheckedCols = 3;
+        public const string GreenPointStayGreenCondition = "2, 3, 6";
+        public const string RedPointBecomeGreenCondition = "3, 6";
+
+        //Want to proceed
+        public const string WantToProceedStr = "Do you want to proceed? (Yes/No)";
+        public const string Yes = "yes";
+        public const string No = "no";
+
     }
 }

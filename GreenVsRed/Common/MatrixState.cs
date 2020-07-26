@@ -26,11 +26,11 @@ namespace GreenVsRed.Common
             try
             {
                 var matrixDimention = GetMatrixDimention();
-                var matrixHeight = matrixDimention.CoordY;
-                var matrixWidth = matrixDimention.CoordX;
-                
-                //var generation = ReadMatrix(matrixWidth, matrixHeight);
-                
+                var matrixHeight = matrixDimention.CoordY();
+                var matrixWidth = matrixDimention.CoordX();
+
+                var generation = ReadMatrix(matrixWidth, matrixHeight);
+
                 var pointCoordX =0;
                 var pointCoordY = 0;
                 var rounds = 0;
@@ -115,7 +115,7 @@ namespace GreenVsRed.Common
 
             if (coordX < GeneralConstants.MinTargetPointX || coordX >= matrixWidth || coordY < GeneralConstants.MinTargetPointY || coordY >= matrixHeight)
             {
-                var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX,coordY, GeneralConstants.MinTargetPointX, matrixWidth, GeneralConstants.MinMatrixSize, matrixHeight);
+                var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX,coordY, GeneralConstants.MinTargetPointX, matrixWidth-1, GeneralConstants.MinTargetPointY, matrixHeight-1);
                 throw new ArgumentOutOfRangeException(nameof(coordX), errMsg);
             }
 
@@ -173,7 +173,7 @@ namespace GreenVsRed.Common
 
         /// <exception cref="ArgumentException">Thrown when line 
         /// contains not enougth parameters.</exception>
-        private static Point GetMatrixDimention()
+        private IPoint GetMatrixDimention()
         {
             Console.Write(GeneralConstants.EnterMatrixDimensions);
             // Read first line and trim it. 

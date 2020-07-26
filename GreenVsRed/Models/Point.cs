@@ -6,16 +6,19 @@ namespace GreenVsRed.Models
 {
     public class Point:IPoint
     {
+        private readonly int x;
+        private readonly int y;
+
         public Point() { }
 
         public Point(int coordX, int coordY)
         {
-            this.CoordX = coordX;
-            this.CoordY = coordY;
+            this.x = coordX;
+            this.y = coordY;
         }
 
-        public int CoordX { get; private set; }
+        public int CoordX() => this.x;
 
-        public int CoordY { get; private set; }
+        public int CoordY() => this.y;
     }
 }
