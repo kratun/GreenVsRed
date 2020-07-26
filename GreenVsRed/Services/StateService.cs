@@ -97,19 +97,47 @@ namespace GreenVsRed.Services
             return matrix;
         }
 
+        public ITargetConditions GetTargetConditions(int matrixWidth, int matrixHeight)
+        {
+            ITargetConditions targetConditions = new TargetConditions();
+            while (true)
+            {
+                try
+                {
+                    Console.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+
+                    var input = Console.ReadLine().Trim();
+
+                    targetConditions = ValidateTargetConditions(input, matrixWidth, matrixHeight);
+
+                    WriteAllConditionsOk();
+
+                    return targetConditions;
+                }
+                catch (Exception e)
+                {
+                    if (e is ArgumentException)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    else { throw e; }
+
+                }
+            }
+            
+        }
+
         /// <exception cref="ArgumentException">Thrown when line 
         /// contains not enougth or correct parameters.</exception>
-        public List<int> GetTargetConditions(int matrixWidth, int matrixHeight)
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when    
+        /// point with coordX and coordY does not exist.</exception>
+        private ITargetConditions ValidateTargetConditions(string input, int matrixWidth, int matrixHeight)
         {
-            Console.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
-
             var separators = new char[] { ',', ' ' };
-            var input = Console.ReadLine().Trim();
-
             var args = input
-                .Split(separators, StringSplitOptions.RemoveEmptyEntries)
-                .ToList();
-
+                        .Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                        .ToList();
+            
             //Validate first line that contain three argument 
             var isValidInput = Regex.IsMatch(input, RegXPattern.TargetConditions);
             if (!isValidInput || args.Count != GeneralConstants.TargetConditionsCount)
@@ -148,11 +176,9 @@ namespace GreenVsRed.Services
                 throw new ArgumentException(errMsg);
             }
 
-            var result = new List<int>() { coordX, coordY, rounds };
+            var targetConditions = new TargetConditions(coordX, coordY, rounds);
 
-            WriteAllConditionsOk();
-
-            return result;
+            return targetConditions;
         }
 
         private void WriteAllConditionsOk()

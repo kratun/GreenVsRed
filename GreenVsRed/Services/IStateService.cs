@@ -7,7 +7,7 @@ namespace GreenVsRed.Services
     {
         List<List<int>> CreateMatrix(int matrixWidth, int matrixHeight);
         IPoint GetMatrixDimention();
-        List<int> GetTargetConditions(int matrixWidth, int matrixHeight);
+        ITargetConditions GetTargetConditions(int matrixWidth, int matrixHeight);
         void WriteExpectedResult(int result);
     }
 }

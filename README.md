@@ -7,7 +7,7 @@ Visual Studio v 16.6.5 or any other software that allows you to start .Net Core 
 ```
 
 ## How to run
-Find and loaded the file GreenVsRed.sln from the directory where you downloaded it.</br>
+Find and load GreenVsRed.sln file from the directory where you downloaded it.</br>
 When the project is loaded press F5 button (if you use Visual Studio v 16.6.5) from the keyboard or check how to start Console App .Net Core 3.1 with program that you use.</br>
 
 ## Game Description

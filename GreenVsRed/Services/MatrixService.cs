@@ -23,30 +23,30 @@ namespace GreenVsRed.Services
         public List<int> TargetPointColors { get; set; }
 
         //Recalculate Generation N rounds and return how many times the target point become green 
-        public void ChangeGenerationNRounds(IPoint point, int rounds)
+        public void ChangeGenerationNRounds(int coordX, int coordY, int rounds)
         {
             WritePleaseWaitCalc();
-            var pointColor = GetPointColor(point);
+            var pointColor = GetPointColor(coordX, coordY);
             this.TargetPointColors.Add(pointColor);
             for (int i = 0; i < rounds; i++)
             {
 
                 this.Generation = RoundNextGeneration();
 
-                pointColor = GetPointColor(point);
+                pointColor = GetPointColor(coordX, coordY);
                 this.TargetPointColors.Add(pointColor);
             }
         }
 
         private void WritePleaseWaitCalc()
         {
-            Console.WriteLine("Please wait for calculations!");
+            Console.WriteLine(GeneralConstants.WaitCalculations);
         }
 
         //Receive point and return point color number
-        private int GetPointColor(IPoint point)
+        private int GetPointColor(int coordX, int coordY)
         {
-            var pointColor = this.Generation[point.CoordY()][point.CoordX()];
+            var pointColor = this.Generation[coordY][coordX];
 
             return pointColor;
         }

@@ -32,7 +32,8 @@ namespace GreenVsRed.Common.Constants
         public const string GreenPointStayGreenCondition = "2, 3, 6";
         public const string RedPointBecomeGreenCondition = "3, 6";
 
-        //Want to proceed
+        //Want to proceed "Please wait for calculations!"
+        public const string WaitCalculations = "Please wait for calculations!";
         public const string WantToProceedStr = "Do you want to proceed? (Yes/No)";
         public const string Yes = "yes";
         public const string No = "no";

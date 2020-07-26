@@ -11,7 +11,7 @@ namespace GreenVsRed.Models
 
         public Point() { }
 
-        public Point(int coordX, int coordY)
+        public Point(int coordX, int coordY):this()
         {
             this.x = coordX;
             this.y = coordY;

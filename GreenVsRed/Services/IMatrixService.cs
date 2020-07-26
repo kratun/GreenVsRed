@@ -8,6 +8,6 @@ namespace GreenVsRed.Services
         List<List<int>> Generation { get; set; }
         List<int> TargetPointColors { get; set; }
 
-        void ChangeGenerationNRounds(IPoint point, int rounds);
+        void ChangeGenerationNRounds(int coordX, int coordY, int rounds);
     }
 }
