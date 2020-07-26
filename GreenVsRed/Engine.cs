@@ -28,7 +28,7 @@ namespace GreenVsRed
 
                 this.matrixService.Generation = this.stateService.CreateMatrix(matrixDimensions.CoordX(), matrixDimensions.CoordY());
 
-                //TODO Refactor to Class TargetCondition in state service
+                //TODO Refactor this
                 var point = new Point();
                 var rounds = 0;
                 while (true)
@@ -55,7 +55,7 @@ namespace GreenVsRed
                         else { throw e; }
 
                     }
-                }
+                }//Refactor Up
 
                 this.matrixService.ChangeGenerationNRounds(point, rounds);
 
@@ -63,78 +63,16 @@ namespace GreenVsRed
 
                 this.stateService.WriteExpectedResult(totalTargetBecomeGreen);
 
-                Console.WriteLine(GeneralConstants.WantToProceedStr);
-                
-                var wantToProceed = false;
-                while (true)
-                {
-                    var answer = Console.ReadLine().Trim();
-                    var answerToLower = answer.ToLower();
-                    
-                    if (answerToLower == GeneralConstants.Yes)
-                    {
-                        wantToProceed = true;
-                        break;
-                    }
-
-                    if (answerToLower == GeneralConstants.No)
-                    {
-                        wantToProceed = false;
-                        break;
-                    }
-                    
-                }
+                var wantToProceed = CommonService.WantToProceed();
 
                 if (!wantToProceed)
                 {
                     break;
                 }
-                 
+
             }
-            
-            //var count = 0;
-            //while (true)
-            //{
-            //    try
-            //    {
-            //        count++;
-            //       var state = new MatrixState();
-
-
-            //        if (count == 5)
-            //        {
-            //            return;
-            //        }
-
-            //        Console.WriteLine("All input is correct. Please wait for calculations!");
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        if (ex is ArgumentException)
-            //        {
-            //            Console.WriteLine(ex.Message);
-            //        }
-            //        else
-            //        {
-            //            throw ex;
-            //        }
-
-
-            //    }
-
-            //}
 
         }
 
-        private void InitializeMatrix(List<List<int>> generation)
-        {
-            throw new NotImplementedException();
-        }
-
-        //public List<string> InitializeMatrix()
-        //{
-        //    Console.WriteLine("InitializeMatrix");
-        //    return null;
-        //}
     }
 }

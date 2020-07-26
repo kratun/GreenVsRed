@@ -9,8 +9,15 @@ using System.Text.RegularExpressions;
 
 namespace GreenVsRed.Services
 {
+    /// <exception cref="ArgumentException">Thrown when line 
+    /// contains not allowed character.</exception>
+    /// <remarks>
     public class StateService : IStateService
     {
+        /// <exception cref="ArgumentException">Thrown when line 
+        /// contains not allowed character.</exception>
+        /// <exception cref="ArgumentException">Thrown when line 
+        /// contains not enougth parameters.</exception>
         public IPoint GetMatrixDimention()
         {
             Console.Write(GeneralConstants.EnterMatrixDimensions);
@@ -90,6 +97,8 @@ namespace GreenVsRed.Services
             return matrix;
         }
 
+        /// <exception cref="ArgumentException">Thrown when line 
+        /// contains not enougth or correct parameters.</exception>
         public List<int> GetTargetConditions(int matrixWidth, int matrixHeight)
         {
             Console.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
