@@ -20,6 +20,7 @@ namespace GreenVsRed.Common.Constants
 
         //Target conditions
         public const string EnterTargetConditions = "Please write three integers separated by comma \",\": first targe point \"X\", then target point \"Y\" and then rounds (how many times you want to change matrix): ";
+        public const string CorrectArgsStr = "All inputs are correct.";
         public const int MinTargetPointX = 0;
         public const int MinTargetPointY = 0;
         public const int MinRounds = 0;
@@ -31,6 +32,7 @@ namespace GreenVsRed.Common.Constants
         public const int MaxCheckedCols = 3;
         public const string GreenPointStayGreenCondition = "2, 3, 6";
         public const string RedPointBecomeGreenCondition = "3, 6";
+        public const string ExpectedResult = "# expected result: ";
 
         //Want to proceed "Please wait for calculations!"
         public const string WaitCalculations = "Please wait for calculations!";

@@ -14,15 +14,23 @@ namespace GreenVsRed.Services
     /// <remarks>
     public class StateService : IStateService
     {
+        public StateService()
+        {
+            this.WriteService = new WriteService();
+            this.ReadService = new ReadService();
+        }
+
+        public IWrite WriteService { get; set; }
+        public IRead ReadService { get; set; }
         /// <exception cref="ArgumentException">Thrown when line 
         /// contains not allowed character.</exception>
         /// <exception cref="ArgumentException">Thrown when line 
         /// contains not enougth parameters.</exception>
         public IPoint GetMatrixDimention()
         {
-            Console.Write(GeneralConstants.EnterMatrixDimensions);
+            WriteService.Write(GeneralConstants.EnterMatrixDimensions);
             // Read first line and trim it. 
-            var input = Console.ReadLine().Trim();
+            var input = Console.ReadLine();
             var separators = new char[] { ',', ' ' };
 
             var args = input
@@ -61,17 +69,17 @@ namespace GreenVsRed.Services
         public List<List<int>> CreateMatrix(int matrixWidth, int matrixHeight)
         {
             var matrix = new List<List<int>>();
-            Console.WriteLine(string.Format(GeneralConstants.EnterMatrix, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+            WriteService.WriteLine(string.Format(GeneralConstants.EnterMatrix, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
             for (int i = 0; i < matrixHeight; i++)
             {
-                Console.Write(string.Format(GeneralConstants.EnterMatrixRow, i + 1));
-                var inputRow = Console.ReadLine().Trim();
+                WriteService.Write(string.Format(GeneralConstants.EnterMatrixRow, i + 1));
+                var inputRow = ReadService.ReadLine();
 
                 //Validate allowed digits in matrix
                 if (!Regex.IsMatch(inputRow, RegXPattern.AllowedDigitsInMatrix))
                 {
                     var errMsg = string.Format(ErrMsg.NotAllowedCharacterInLine, i + 1, inputRow, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
-                    Console.WriteLine(errMsg);
+                    WriteService.WriteLine(errMsg);
                     i--;
                     continue;
                 }
@@ -86,7 +94,7 @@ namespace GreenVsRed.Services
                 if (listItem.Count != matrixWidth)
                 {
                     var errMsg = string.Format(ErrMsg.NotCorrectDigitsCount, i + 1, inputRow, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
-                    Console.WriteLine(errMsg);
+                    WriteService.WriteLine(errMsg);
                     i--;
                     continue;
                 }
@@ -104,9 +112,9 @@ namespace GreenVsRed.Services
             {
                 try
                 {
-                    Console.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+                    WriteService.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
 
-                    var input = Console.ReadLine().Trim();
+                    var input = ReadService.ReadLine();
 
                     targetConditions = ValidateTargetConditions(input, matrixWidth, matrixHeight);
 
@@ -118,7 +126,7 @@ namespace GreenVsRed.Services
                 {
                     if (e is ArgumentException)
                     {
-                        Console.WriteLine(e.Message);
+                        WriteService.WriteLine(e.Message);
                     }
                     else { throw e; }
 
@@ -183,12 +191,12 @@ namespace GreenVsRed.Services
 
         private void WriteAllConditionsOk()
         {
-            Console.WriteLine("All inputs are correct.");
+            WriteService.WriteLine(GeneralConstants.CorrectArgsStr);
         }
 
         public void WriteExpectedResult(int result)
         {
-            Console.WriteLine("# expected result: " + result);
+            WriteService.WriteLine(GeneralConstants.ExpectedResult + result);
         }
     }
 }

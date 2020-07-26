@@ -10,6 +10,7 @@ namespace GreenVsRed.Services
     {
         public MatrixService()
         {
+            this.WriteService = new WriteService();
             this.TargetPointColors = new List<int>();
             this.Generation = new List<List<int>>();
         }
@@ -19,13 +20,15 @@ namespace GreenVsRed.Services
             
         }
 
+        public IWrite WriteService { get; set; }
         public List<List<int>> Generation { get; set; }
         public List<int> TargetPointColors { get; set; }
 
         //Recalculate Generation N rounds and return how many times the target point become green 
         public void ChangeGenerationNRounds(int coordX, int coordY, int rounds)
         {
-            WritePleaseWaitCalc();
+            WriteService.WriteLine(GeneralConstants.WaitCalculations);
+
             var pointColor = GetPointColor(coordX, coordY);
             this.TargetPointColors.Add(pointColor);
             for (int i = 0; i < rounds; i++)
@@ -36,11 +39,6 @@ namespace GreenVsRed.Services
                 pointColor = GetPointColor(coordX, coordY);
                 this.TargetPointColors.Add(pointColor);
             }
-        }
-
-        private void WritePleaseWaitCalc()
-        {
-            Console.WriteLine(GeneralConstants.WaitCalculations);
         }
 
         //Receive point and return point color number
