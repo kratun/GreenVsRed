@@ -46,10 +46,7 @@ namespace GreenVsRed
 
                     this.MatrixService.RecalculateMatrixNRounds();
 
-                    var totalTargetBecomeGreen = this.MatrixService.TargetPointColors.Where(c => c == GeneralConstants.GreenNumber).ToList().Count;
-
-                    this.MatrixService.WriteExpectedResult(totalTargetBecomeGreen);
-
+                    this.MatrixService.WriteExpectedResult();
                 }
                 catch (Exception e)
                 {
@@ -68,7 +65,7 @@ namespace GreenVsRed
                     break;
                 }
 
-                this.MatrixService.TargetPointColors = new List<int>();
+                this.MatrixService = new MatrixService();
             }
         }
     }

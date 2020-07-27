@@ -6,14 +6,35 @@ namespace GreenVsRed.Services
 {
     using System.Collections.Generic;
 
+    using GreenVsRed.Models;
+
     /// <summary>
-    /// Interface provides matrix and color collections, and method to recalculate matrix N round. 
+    /// Provides properties and methods that create and recalculating matrix N times.
     /// </summary>
     public interface IMatrixService
     {
+        /// <summary>
+        /// Gets or sets current matrix state.
+        /// </summary>
         List<List<int>> Matrix { get; set; }
+
+        /// <summary>
+        /// Gets or sets collection of each target point color during recalculation.
+        /// </summary>
         List<int> TargetPointColors { get; set; }
 
-        void RecalculateMatrixNRounds(int coordX, int coordY, int rounds);
+        /// <summary>
+        /// Create matrix from the input.
+        /// </summary>
+        void CreateMatrix();
+
+        void GetTargetConditions();
+
+        void WriteExpectedResult();
+
+        /// <summary>
+        /// Method who recalculate Matrix N rounds and return how many times the target point become green.
+        /// </summary>
+        void RecalculateMatrixNRounds();
     }
 }

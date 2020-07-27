@@ -4,11 +4,17 @@
 
 namespace GreenVsRed.Services
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
     using GreenVsRed.Common.Constants;
+    using GreenVsRed.Common.Validations;
+    using GreenVsRed.Models;
 
     /// <summary>
-    /// Provides methods to recalculating matrix. Has collection of each target point color during recalculation.
+    /// Provides properties and methods that create and recalculating matrix N times.
     /// </summary>
     /// <inheritdoc cref="IMatrixService"/>
     public class MatrixService : IMatrixService
@@ -19,24 +25,151 @@ namespace GreenVsRed.Services
         public MatrixService()
         {
             this.WriteService = new WriteService();
+            this.ReadService = new ReadService();
             this.TargetPointColors = new List<int>();
             this.Matrix = new List<List<int>>();
+            this.TargetConditions = new TargetConditions();
         }
 
+        public ITargetConditions TargetConditions { get; set; }
+
         /// <summary>
-        /// Service that write text.
+        /// Service for writing text.
         /// </summary>
         /// <inheritdoc cref="IWrite"/>
         public IWrite WriteService { get; set; }
 
         /// <summary>
-        /// Collection of each target point color during recalculation.
+        /// Service for reading text.
+        /// </summary>
+        /// <inheritdoc cref="IRead"/>
+        public IRead ReadService { get; set; }
+
+        /// <summary>
+        /// Gets or sets collection of each target point color during recalculation.
         /// </summary>
         /// <inheritdoc cref="List{T}"/>
         public List<int> TargetPointColors { get; set; }
 
+        /// <summary>
+        /// Gets or sets current matrix state.
+        /// </summary>
         /// <inheritdoc cref="List{T}"/>
         public List<List<int>> Matrix { get; set; }
+
+        /// <summary>
+        /// Get matrix width and height.
+        /// </summary>
+        /// <returns>Matrix dementions X and Y.</returns>
+        /// <exception cref="ArgumentException">Thrown when line
+        /// contains not allowed character or not enougth parameters.</exception>
+        public IPoint GetMatrixDimensions()
+        {
+            this.WriteService.Write(GeneralConstants.EnterMatrixDimensions);
+
+            var input = this.ReadService.ReadLine();
+
+            try
+            {
+                var result = this.TryGetPoint(input, GeneralConstants.MatrixDimension, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+                return result;
+            }
+            catch (Exception e)
+            {
+                if (e is ArgumentException)
+                {
+                    this.WriteService.WriteLine(e.Message);
+                    throw e;
+                }
+                else
+                {
+                    throw e;
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Create matrix from the input.
+        /// </summary>
+        /// <param name="matrixWidth">Matrix width.</param>
+        /// <param name="matrixHeight">Matrix height.</param>
+        /// <returns>Created matrix.</returns>
+        public void CreateMatrix()
+        {
+            var matrixDemention = this.GetMatrixDimensions();
+            var matrixHeight = matrixDemention.CoordX();
+            var matrixWidth = matrixDemention.CoordY();
+            var matrix = new List<List<int>>();
+            this.WriteService.WriteLine(string.Format(GeneralConstants.EnterMatrix, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+            for (int i = 0; i < matrixHeight; i++)
+            {
+                this.WriteService.Write(string.Format(GeneralConstants.EnterMatrixRow, i + 1));
+                var inputRow = this.ReadService.ReadLine();
+
+                // Validate allowed digits in matrix
+                if (!Regex.IsMatch(inputRow, RegXPattern.AllowedDigitsInMatrix))
+                {
+                    var errMsg = string.Format(ErrMsg.NotAllowedCharacterInLine, i + 1, inputRow, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
+                    this.WriteService.WriteLine(errMsg);
+                    i--;
+                    continue;
+                }
+
+                var listItem = inputRow
+                     .ToCharArray()
+                     .Select(ch => ch - '0')
+                     .ToList();
+
+
+                // Validate row width
+                if (listItem.Count != matrixWidth)
+                {
+                    var errMsg = string.Format(ErrMsg.NotCorrectDigitsCount, i + 1, inputRow, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
+                    this.WriteService.WriteLine(errMsg);
+                    i--;
+                    continue;
+                }
+
+                this.Matrix.Add(listItem);
+            }
+        }
+
+        /// <summary>
+        /// Get target point dimensions and rounds to recalculate matrix.
+        /// </summary>
+        public void GetTargetConditions()
+        {
+            // TODO ITargetConditions
+            var matrixHeight = this.Matrix.Count;
+            var matrixWidth = this.Matrix[0].Count;
+            ITargetConditions targetConditions = new TargetConditions();
+            while (true)
+            {
+                try
+                {
+                    WriteService.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+
+                    var input = ReadService.ReadLine();
+
+                    this.TargetConditions = ValidateTargetConditions(input, matrixWidth, matrixHeight);
+
+                    WriteAllConditionsOk();
+
+                    break;
+                }
+                catch (Exception e)
+                {
+                    if ((e is ArgumentException) || (e is ArgumentOutOfRangeException))
+                    {
+                        WriteService.WriteLine(e.Message);
+                    }
+                    else { throw e; }
+
+                }
+            }
+
+        }
 
         /// <summary>
         /// Method who recalculate Matrix N rounds and return how many times the target point become green.
@@ -44,9 +177,13 @@ namespace GreenVsRed.Services
         /// <param name="coordX">Point coordinate X.</param>
         /// <param name="coordY">Point coordinate Y.</param>
         /// <param name="rounds">Matrix recalculation rounds.</param>
-        public void RecalculateMatrixNRounds(int coordX, int coordY, int rounds)
+        public void RecalculateMatrixNRounds()
         {
             this.WriteService.WriteLine(GeneralConstants.WaitCalculations);
+
+            int coordX = this.TargetConditions.CoordX();
+            int coordY = this.TargetConditions.CoordY();
+            int rounds = this.TargetConditions.Rounds;
 
             var pointColor = this.GetPointColor(coordX, coordY);
             this.TargetPointColors.Add(pointColor);
@@ -57,6 +194,130 @@ namespace GreenVsRed.Services
                 pointColor = this.GetPointColor(coordX, coordY);
                 this.TargetPointColors.Add(pointColor);
             }
+        }
+
+        private IPoint TryGetPoint(string input, int validArgsCount, int minSize, int maxSize)
+        {
+            var separators = new char[] { ',', ' ' };
+
+            var args = input
+                .Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                .ToArray();
+
+            // Validate first line that contain two argument 
+            if (!Regex.IsMatch(input, RegXPattern.FirstLine) || args.Length != validArgsCount)
+            {
+                var errMsg = ErrMsg.MatrixDimentionException;
+                throw new ArgumentException(errMsg);
+            }
+
+
+            int height;
+            // Validate Height that is number between Min and Max possible
+            if (!int.TryParse(args[1], out height) || height < minSize || height > maxSize)
+            {
+                var errMsg = string.Format(ErrMsg.NotCorrectHeight, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+                throw new ArgumentException(errMsg);
+            }
+
+            int width;
+            // Validate Width that is number between Min and Max possible
+            if (!int.TryParse(args[0], out width) || width < GeneralConstants.MinMatrixSize || width > GeneralConstants.MaxMatrixSize || width > height)
+            {
+                var errMsg = string.Format(ErrMsg.NotCorrectWidth, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+                throw new ArgumentException(errMsg);
+            }
+
+            var point = new Point(width, height);
+
+            return point;
+        }
+
+
+        /// <exception cref="ArgumentException">Thrown when line 
+        /// contains not enougth or correct parameters.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when    
+        /// point with coordX and coordY does not exist.</exception>
+        private ITargetConditions ValidateTargetConditions(string input, int matrixWidth, int matrixHeight)
+        {
+            var separators = new char[] { ',', ' ' };
+            var args = input
+                        .Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                        .ToList();
+
+            // Validate first line that contain three argument 
+            var isValidInput = Regex.IsMatch(input, RegXPattern.TargetConditions);
+            if (!isValidInput || args.Count != GeneralConstants.TargetConditionsCount)
+            {
+                var errMsg = ErrMsg.TargetConditionsException;
+                throw new ArgumentException(errMsg);
+            }
+
+            int coordX;
+
+            // Validate Target Point X. Integer between Min Target Point X and Matrix Width
+            if (!int.TryParse(args[0], out coordX))
+            {
+                var errMsg = string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth);
+                throw new ArgumentException(nameof(coordX), errMsg);
+            }
+
+            int coordY;
+
+            // Validate Target Point Y. Integer between Min Target Point Y and Matrix Width
+            if (!int.TryParse(args[1], out coordY))
+            {
+                var errMsg = string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinMatrixSize, matrixHeight);
+                throw new ArgumentException(errMsg);
+            }
+
+            if ((coordX < GeneralConstants.MinTargetPointX || coordX >= matrixWidth) && (coordY < GeneralConstants.MinTargetPointY || coordY >= matrixHeight))
+            {
+                var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY, GeneralConstants.MinTargetPointX, matrixWidth - 1, GeneralConstants.MinTargetPointY, matrixHeight - 1);
+                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth - 1);
+                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinTargetPointY, matrixHeight - 1);
+
+                throw new ArgumentOutOfRangeException("", errMsg);
+            }
+            else if (coordX < GeneralConstants.MinTargetPointX || coordX >= matrixWidth)
+            {
+                var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY, GeneralConstants.MinTargetPointX, matrixWidth - 1, GeneralConstants.MinTargetPointY, matrixHeight - 1);
+                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth - 1);
+
+                throw new ArgumentOutOfRangeException("", errMsg);
+            }
+            else if (coordY < GeneralConstants.MinTargetPointY || coordY >= matrixHeight)
+            {
+                var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY);
+                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinTargetPointY, matrixHeight - 1);
+
+                throw new ArgumentOutOfRangeException("", errMsg);
+            }
+
+            int rounds;
+
+            // Validate Rounds. Integer between Min and Max possible rounds
+            if (!int.TryParse(args[2], out rounds) || rounds < GeneralConstants.MinRounds || rounds > GeneralConstants.MaxRounds)
+            {
+                var errMsg = string.Format(ErrMsg.NotCorrectWidth, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+                throw new ArgumentException(errMsg);
+            }
+
+            var targetConditions = new TargetConditions(coordX, coordY, rounds);
+
+            return targetConditions;
+        }
+
+        private void WriteAllConditionsOk()
+        {
+            this.WriteService.WriteLine(GeneralConstants.CorrectArgsStr);
+        }
+
+        public void WriteExpectedResult()
+        {
+            var result = this.TargetPointColors.Where(c => c == GeneralConstants.GreenNumber).ToList().Count;
+            var strResult = GeneralConstants.ExpectedResult + result;
+            this.WriteService.WriteLine(strResult);
         }
 
         // Receive point and return point color number.
