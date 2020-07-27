@@ -28,11 +28,11 @@ namespace GreenVsRed
                 {
                     var matrixDimensions = stateService.GetMatrixDimensions();
 
-                    this.matrixService.Generation = this.stateService.CreateMatrix(matrixDimensions.CoordX(), matrixDimensions.CoordY());
+                    this.matrixService.Matrix = this.stateService.CreateMatrix(matrixDimensions.CoordX(), matrixDimensions.CoordY());
 
                     var targetConditions = this.stateService.GetTargetConditions(matrixDimensions.CoordX(), matrixDimensions.CoordY());
 
-                    this.matrixService.ChangeGenerationNRounds(targetConditions.CoordX(), targetConditions.CoordY(), targetConditions.Rounds);
+                    this.matrixService.RecalculateMatrixNRounds(targetConditions.CoordX(), targetConditions.CoordY(), targetConditions.Rounds);
 
                     var totalTargetBecomeGreen = this.matrixService.TargetPointColors.Where(c => c == GeneralConstants.GreenNumber).ToList().Count;
 

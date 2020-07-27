@@ -1,13 +1,22 @@
-﻿using GreenVsRed.Common.Constants;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// <copyright file="CommonService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace GreenVsRed.Services
 {
+    using System;
+    using GreenVsRed.Common.Constants;
+
+    /// <summary>
+    /// Provides static methods for gameplay.
+    /// </summary>
     public static class CommonService
     {
-        public static Boolean WantToProceed()
+        /// <summary>
+        /// Ask question and wainting for response "Yes" or "No".
+        /// </summary>
+        /// <returns>True or false.</returns>
+        public static bool WantToProceed()
         {
             var wantToProceed = false;
             while (true)
@@ -27,7 +36,6 @@ namespace GreenVsRed.Services
                     wantToProceed = false;
                     break;
                 }
-
             }
 
             return wantToProceed;

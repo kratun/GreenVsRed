@@ -1,13 +1,19 @@
-﻿using GreenVsRed.Models;
-using System.Collections.Generic;
+﻿// <copyright file="IMatrixService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace GreenVsRed.Services
 {
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// Interface provides matrix and color collections, and method to recalculate matrix N round. 
+    /// </summary>
     public interface IMatrixService
     {
-        List<List<int>> Generation { get; set; }
+        List<List<int>> Matrix { get; set; }
         List<int> TargetPointColors { get; set; }
 
-        void ChangeGenerationNRounds(int coordX, int coordY, int rounds);
+        void RecalculateMatrixNRounds(int coordX, int coordY, int rounds);
     }
 }
