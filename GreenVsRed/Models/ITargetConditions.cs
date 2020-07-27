@@ -1,6 +1,12 @@
-﻿namespace GreenVsRed.Models
+﻿// <copyright file="ITargetConditions.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace GreenVsRed.Models
 {
-    public interface ITargetConditions:IPoint, IRound
+    /// <inheritdoc cref="IPoint"/>
+    /// <inheritdoc cref="IRound"/>
+    public interface ITargetConditions : IPoint, IRound
     {
     }
 }
