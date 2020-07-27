@@ -1,24 +1,31 @@
-﻿using GreenVsRed.Common;
-using GreenVsRed.Common.Constants;
-using GreenVsRed.Models;
-using GreenVsRed.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿// <copyright file="Engine.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace GreenVsRed
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using GreenVsRed.Common.Constants;
+    using GreenVsRed.Services;
+
+    /// <summary>
+    /// Provide method to run game.
+    /// </summary>
+    /// <inheritdoc cref="IEngine"/>
     public class Engine : IEngine
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Engine"/> class.
+        /// </summary>
         public Engine()
         {
-            this.stateService = new StateService();
-            this.matrixService = new MatrixService();
+            this.MatrixService = new MatrixService();
         }
 
-        public IStateService stateService { get; set; }
-
-        public IMatrixService matrixService { get; set; }
+        public IMatrixService MatrixService { get; set; }
 
         public void Run()
         {
@@ -26,25 +33,24 @@ namespace GreenVsRed
             {
                 try
                 {
-                    var matrixDimensions = stateService.GetMatrixDimensions();
+                    this.MatrixService.CreateMatrix();
 
-                    this.matrixService.Matrix = this.stateService.CreateMatrix(matrixDimensions.CoordX(), matrixDimensions.CoordY());
+                    this.MatrixService.GetTargetConditions();
 
-                    var targetConditions = this.stateService.GetTargetConditions(matrixDimensions.CoordX(), matrixDimensions.CoordY());
+                    this.MatrixService.RecalculateMatrixNRounds();
 
-                    this.matrixService.RecalculateMatrixNRounds(targetConditions.CoordX(), targetConditions.CoordY(), targetConditions.Rounds);
+                    var totalTargetBecomeGreen = this.MatrixService.TargetPointColors.Where(c => c == GeneralConstants.GreenNumber).ToList().Count;
 
-                    var totalTargetBecomeGreen = this.matrixService.TargetPointColors.Where(c => c == GeneralConstants.GreenNumber).ToList().Count;
-
-                    this.stateService.WriteExpectedResult(totalTargetBecomeGreen);
+                    this.MatrixService.WriteExpectedResult(totalTargetBecomeGreen);
 
                 }
                 catch (Exception e)
                 {
-                    if ((e is ArgumentException)||(e is ArgumentOutOfRangeException))
+                    if ((e is ArgumentException) || (e is ArgumentOutOfRangeException))
                     {
                         continue;
                     }
+
                     throw e;
                 }
 
@@ -55,10 +61,8 @@ namespace GreenVsRed
                     break;
                 }
 
-                this.matrixService.TargetPointColors = new List<int>();
+                this.MatrixService.TargetPointColors = new List<int>();
             }
-
         }
-
     }
 }
