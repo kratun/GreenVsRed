@@ -1,4 +1,8 @@
-﻿namespace GreenVsRed.Common.Constants
+﻿// <copyright file="GeneralConstants.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace GreenVsRed.Common.Constants
 {
     /// <summary>
     /// Static Class GeneralConstants contains all constants except error constants.
@@ -82,21 +86,47 @@
         public const int MaxRounds = int.MaxValue;
 
         /// <summary>
-        /// TargetConditionsCount is an integer. It represent count of last arguments.
+        /// TargetConditionsCount is an constant integer. It represent count of last arguments.
         /// </summary>
         public const int TargetConditionsCount = 3;
 
         // Next Color constraints
-        
+
+        /// <summary>
+        /// GreenPointStayGreenCondition is a constant string used for rule "green cell stay green" which contains numbers separated by comma ",".
+        /// </summary>
         public const string GreenPointStayGreenCondition = "2, 3, 6";
+
+        /// <summary>
+        /// RedPointBecomeGreenCondition is a constant string used for rule "red cell become green" which contains numbers separated by comma ",".
+        /// </summary>
         public const string RedPointBecomeGreenCondition = "3, 6";
+
+        /// <summary>
+        /// ExpectedResult is a constant string used to show the result of the game.
+        /// </summary>
         public const string ExpectedResult = "# expected result: ";
 
-        //Want to proceed "Please wait for calculations!"
-        public const string WaitCalculations = "Please wait for calculations!";
-        public const string WantToProceedStr = "Do you want to proceed? (Yes/No)";
-        public const string Yes = "yes";
-        public const string No = "no";
+        // Want to proceed "Please wait for calculations!"
 
+        /// <summary>
+        /// WaitCalculations is a constant string for message: "Please wait for calculations!".
+        /// </summary>
+        public const string WaitCalculations = "Please wait for calculations!";
+
+        /// <summary>
+        /// WantToProceedStr is a constant string for message: "Do you want to proceed? (Yes/No)".
+        /// </summary>
+        public const string WantToProceedStr = "Do you want to proceed? (Yes/No)";
+
+        /// <summary>
+        /// Yes is a constant string for answer: "yes".
+        /// </summary>
+        public const string Yes = "yes";
+
+        /// <summary>
+        /// No is a constant string for answer: "no".
+        /// </summary>
+        public const string No = "no";
     }
 }

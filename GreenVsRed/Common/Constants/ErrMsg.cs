@@ -1,4 +1,8 @@
-﻿namespace GreenVsRed.Common.Constants
+﻿// <copyright file="ErrMsg.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace GreenVsRed.Common.Constants
 {
     /// <summary>
     /// Static Class ErrMsg contains all error messages.
@@ -49,6 +53,5 @@
         /// Error: Target point [X,Y] is out of range.
         /// </summary>
         public const string OutOfRangeTargetPoint = "Error: Target point [{0},{1}] is out of range";
-
     }
 }
