@@ -25,8 +25,15 @@ namespace GreenVsRed
             this.MatrixService = new MatrixService();
         }
 
+        /// <summary>
+        /// Gets or sets properties and methods that used to create and recalculating matrix.
+        /// </summary>
         public IMatrixService MatrixService { get; set; }
 
+        /// <summary>
+        /// Method that run game.
+        /// </summary>
+        /// <exception cref="Exception">Can throw exception.</exception>
         public void Run()
         {
             while (true)
