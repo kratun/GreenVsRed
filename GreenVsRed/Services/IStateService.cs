@@ -6,7 +6,7 @@ namespace GreenVsRed.Services
     public interface IStateService
     {
         List<List<int>> CreateMatrix(int matrixWidth, int matrixHeight);
-        IPoint GetMatrixDimention();
+        IPoint GetMatrixDimensions();
         ITargetConditions GetTargetConditions(int matrixWidth, int matrixHeight);
         void WriteExpectedResult(int result);
     }

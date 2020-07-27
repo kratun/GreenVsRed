@@ -24,17 +24,29 @@ namespace GreenVsRed
         {
             while (true)
             {
-                var matrixDimensions = stateService.GetMatrixDimention();
+                try
+                {
+                    var matrixDimensions = stateService.GetMatrixDimensions();
 
-                this.matrixService.Generation = this.stateService.CreateMatrix(matrixDimensions.CoordX(), matrixDimensions.CoordY());
+                    this.matrixService.Generation = this.stateService.CreateMatrix(matrixDimensions.CoordX(), matrixDimensions.CoordY());
 
-                var targetConditions = this.stateService.GetTargetConditions(matrixDimensions.CoordX(), matrixDimensions.CoordY());
-                
-                this.matrixService.ChangeGenerationNRounds(targetConditions.CoordX(),targetConditions.CoordY(), targetConditions.Rounds);
+                    var targetConditions = this.stateService.GetTargetConditions(matrixDimensions.CoordX(), matrixDimensions.CoordY());
 
-                var totalTargetBecomeGreen = this.matrixService.TargetPointColors.Where(c => c == GeneralConstants.GreenNumber).ToList().Count;
+                    this.matrixService.ChangeGenerationNRounds(targetConditions.CoordX(), targetConditions.CoordY(), targetConditions.Rounds);
 
-                this.stateService.WriteExpectedResult(totalTargetBecomeGreen);
+                    var totalTargetBecomeGreen = this.matrixService.TargetPointColors.Where(c => c == GeneralConstants.GreenNumber).ToList().Count;
+
+                    this.stateService.WriteExpectedResult(totalTargetBecomeGreen);
+
+                }
+                catch (Exception e)
+                {
+                    if ((e is ArgumentException)||(e is ArgumentOutOfRangeException))
+                    {
+                        continue;
+                    }
+                    throw e;
+                }
 
                 var wantToProceed = CommonService.WantToProceed();
 

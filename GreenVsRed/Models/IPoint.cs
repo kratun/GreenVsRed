@@ -2,7 +2,7 @@
 {
     public interface IPoint
     {
-        int CoordX();
-        int CoordY();
+       int CoordX();
+       int CoordY();
     }
 }

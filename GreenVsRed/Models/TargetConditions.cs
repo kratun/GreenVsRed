@@ -12,6 +12,11 @@ namespace GreenVsRed.Models
             this.Rounds = 0;
         }
 
+        public TargetConditions(int rounds) 
+        {
+            this.Rounds = rounds;
+        }
+
         public TargetConditions(int x, int y, int rounds) : this(x, y)
         {
             this.Rounds = rounds;

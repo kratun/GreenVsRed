@@ -26,44 +26,30 @@ namespace GreenVsRed.Services
         /// contains not allowed character.</exception>
         /// <exception cref="ArgumentException">Thrown when line 
         /// contains not enougth parameters.</exception>
-        public IPoint GetMatrixDimention()
+        public IPoint GetMatrixDimensions()
         {
             WriteService.Write(GeneralConstants.EnterMatrixDimensions);
             // Read first line and trim it. 
             var input = Console.ReadLine();
-            var separators = new char[] { ',', ' ' };
 
-            var args = input
-                .Split(separators, StringSplitOptions.RemoveEmptyEntries)
-                .ToArray();
-
-            //Validate first line that contain two argument 
-            if (!Regex.IsMatch(input, RegXPattern.FirstLine) || args.Length != GeneralConstants.MatrixDimension)
+            try
             {
-                var errMsg = ErrMsg.MatrixDimentionException;
-                throw new ArgumentException(errMsg);
+                var result = this.TryGetPoint(input, GeneralConstants.MatrixDimension, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+                return result;
+            }
+            catch (Exception e)
+            {
+                if (e is ArgumentException)
+                {
+                    WriteService.WriteLine(e.Message);
+                    throw e;
+                }
+                else
+                {
+                    throw e;
+                }
             }
 
-
-            int height;
-            //Validate Height that is number between Min and Max possible
-            if (!int.TryParse(args[1], out height) || height < GeneralConstants.MinMatrixSize || height > GeneralConstants.MaxMatrixSize)
-            {
-                var errMsg = string.Format(ErrMsg.NotCorrectHeight, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
-                throw new ArgumentException(errMsg);
-            }
-
-            int width;
-            //Validate Width that is number between Min and Max possible
-            if (!int.TryParse(args[0], out width) || width < GeneralConstants.MinMatrixSize || width > GeneralConstants.MaxMatrixSize || width > height)
-            {
-                var errMsg = string.Format(ErrMsg.NotCorrectWidth, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
-                throw new ArgumentException(errMsg);
-            }
-
-            var result = new Point(width, height);
-
-            return result;
         }
 
         public List<List<int>> CreateMatrix(int matrixWidth, int matrixHeight)
@@ -124,7 +110,7 @@ namespace GreenVsRed.Services
                 }
                 catch (Exception e)
                 {
-                    if (e is ArgumentException)
+                    if ((e is ArgumentException)|| (e is ArgumentOutOfRangeException))
                     {
                         WriteService.WriteLine(e.Message);
                     }
@@ -132,8 +118,46 @@ namespace GreenVsRed.Services
 
                 }
             }
-            
+
         }
+
+        private IPoint TryGetPoint(string input, int validArgsCount, int minSize, int maxSize)
+        {
+            var separators = new char[] { ',', ' ' };
+
+            var args = input
+                .Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                .ToArray();
+
+            //Validate first line that contain two argument 
+            if (!Regex.IsMatch(input, RegXPattern.FirstLine) || args.Length != validArgsCount)
+            {
+                var errMsg = ErrMsg.MatrixDimentionException;
+                throw new ArgumentException(errMsg);
+            }
+
+
+            int height;
+            //Validate Height that is number between Min and Max possible
+            if (!int.TryParse(args[1], out height) || height < minSize || height > maxSize)
+            {
+                var errMsg = string.Format(ErrMsg.NotCorrectHeight, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+                throw new ArgumentException(errMsg);
+            }
+
+            int width;
+            //Validate Width that is number between Min and Max possible
+            if (!int.TryParse(args[0], out width) || width < GeneralConstants.MinMatrixSize || width > GeneralConstants.MaxMatrixSize || width > height)
+            {
+                var errMsg = string.Format(ErrMsg.NotCorrectWidth, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+                throw new ArgumentException(errMsg);
+            }
+
+            var point = new Point(width, height);
+
+            return point;
+        }
+
 
         /// <exception cref="ArgumentException">Thrown when line 
         /// contains not enougth or correct parameters.</exception>
@@ -145,7 +169,7 @@ namespace GreenVsRed.Services
             var args = input
                         .Split(separators, StringSplitOptions.RemoveEmptyEntries)
                         .ToList();
-            
+
             //Validate first line that contain three argument 
             var isValidInput = Regex.IsMatch(input, RegXPattern.TargetConditions);
             if (!isValidInput || args.Count != GeneralConstants.TargetConditionsCount)
@@ -170,10 +194,27 @@ namespace GreenVsRed.Services
                 throw new ArgumentException(errMsg);
             }
 
-            if (coordX < GeneralConstants.MinTargetPointX || coordX >= matrixWidth || coordY < GeneralConstants.MinTargetPointY || coordY >= matrixHeight)
+            if ((coordX < GeneralConstants.MinTargetPointX || coordX >= matrixWidth) && (coordY < GeneralConstants.MinTargetPointY || coordY >= matrixHeight))
             {
                 var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY, GeneralConstants.MinTargetPointX, matrixWidth - 1, GeneralConstants.MinTargetPointY, matrixHeight - 1);
-                throw new ArgumentOutOfRangeException(nameof(coordX), errMsg);
+                errMsg += ("\n" + string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth - 1));
+                errMsg += ("\n" + string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinTargetPointY, matrixHeight - 1));
+
+                throw new ArgumentOutOfRangeException("",errMsg);
+            }
+            else if (coordX < GeneralConstants.MinTargetPointX || coordX >= matrixWidth)
+            {
+                var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY, GeneralConstants.MinTargetPointX, matrixWidth - 1, GeneralConstants.MinTargetPointY, matrixHeight - 1);
+                errMsg += ("\n" + string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth - 1));
+
+                throw new ArgumentOutOfRangeException("", errMsg);
+            }
+            else if (coordY < GeneralConstants.MinTargetPointY || coordY >= matrixHeight)
+            {
+                var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY);
+                errMsg += ("\n" + string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinTargetPointY, matrixHeight - 1));
+
+                throw new ArgumentOutOfRangeException("", errMsg);
             }
 
             int rounds;
