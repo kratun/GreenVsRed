@@ -14,6 +14,13 @@ namespace GreenVsRed.Services
     public interface IMatrixService
     {
         /// <summary>
+        /// Get matrix X (width) and Y (height).
+        /// </summary>
+        /// <exception cref="ArgumentException">Thrown when line
+        /// contains not allowed character or not enougth parameters.</exception>
+        void GetMatrixDimensions();
+
+        /// <summary>
         /// Create matrix from input.
         /// </summary>
         void CreateMatrix();

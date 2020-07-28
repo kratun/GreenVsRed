@@ -5,20 +5,18 @@
 namespace GreenVsRed.Models
 {
     /// <summary>
-    /// IPoint interface with two methods: int CoodX() and int CoordY().
+    /// Provide vector X and Y or width and height of a matrix.
     /// </summary>
     public interface IPoint
     {
         /// <summary>
-        /// CoordX() for coordinate X.
+        /// Gets a vector X or width of a matrix.
         /// </summary>
-        /// <returns>Integer.</returns>
-        int CoordX();
+        int X { get; }
 
         /// <summary>
-        /// CoordY() for coordinate Y.
+        /// Gets a vector Y or height of a matrix.
         /// </summary>
-        /// <returns>Integer.</returns>
-        int CoordY();
+        int Y { get; }
     }
 }

@@ -58,7 +58,7 @@ namespace GreenVsRed.Common.Constants
         /// <summary>
         /// EnterTargetConditions is a constant string for message: "Please write three integers separated by comma ",": first targe point "X", then target point "Y" and then rounds (how many times you want to change matrix): ".
         /// </summary>
-        public const string EnterTargetConditions = "Please write three integers separated by comma \",\": first targe point \"X\", then target point \"Y\" and then rounds (how many times you want to change matrix): ";
+        public const string EnterTargetConditions = "Please write three integers separated by comma \",\": first targe point \"X\", then target point \"Y\" and then rounds (how many times you want to recalulate matrix): ";
 
         /// <summary>
         /// EnterTargetConditions is a constant string for message: "All inputs are correct.".
@@ -110,9 +110,9 @@ namespace GreenVsRed.Common.Constants
         // Want to proceed "Please wait for calculations!"
 
         /// <summary>
-        /// WaitCalculations is a constant string for message: "Please wait for calculations!".
+        /// WaitCalculations is a constant string for message: "Please wait calculations!".
         /// </summary>
-        public const string WaitCalculations = "Please wait for calculations!";
+        public const string WaitCalculations = "Please wait calculations!";
 
         /// <summary>
         /// WantToProceedStr is a constant string for message: "Do you want to proceed? (Yes/No)".

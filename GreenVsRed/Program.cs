@@ -9,7 +9,10 @@ namespace GreenVsRed
     /// </summary>
     internal class Program
     {
-        private static void Main()
+        /// <summary>
+        /// Method that run engine.
+        /// </summary>
+        public static void Main()
         {
             var engine = new Engine();
             engine.Run();

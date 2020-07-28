@@ -33,9 +33,9 @@ namespace GreenVsRed.Models
         }
 
         /// <inheritdoc cref="x"/>
-        public int CoordX() => this.x;
+        public int X => this.x;
 
         /// <inheritdoc cref="y"/>
-        public int CoordY() => this.y;
+        public int Y => this.y;
     }
 }

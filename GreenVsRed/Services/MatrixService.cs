@@ -27,7 +27,7 @@ namespace GreenVsRed.Services
             this.WriteService = new WriteService();
             this.ReadService = new ReadService();
             this.TargetPointColors = new List<int>();
-            this.Matrix = new List<List<int>>();
+            this.Matrix = new Matrix();
             this.TargetConditions = new TargetConditions();
         }
 
@@ -55,15 +55,14 @@ namespace GreenVsRed.Services
         /// Gets or sets current matrix state.
         /// </summary>
         /// <inheritdoc cref="List{T}"/>
-        private List<List<int>> Matrix { get; set; }
+        private IMatrix Matrix { get; set; }
 
         /// <summary>
-        /// Get matrix width and height.
+        /// Get matrix X (width) and Y (height).
         /// </summary>
-        /// <returns>Matrix dementions X and Y.</returns>
         /// <exception cref="ArgumentException">Thrown when line
         /// contains not allowed character or not enougth parameters.</exception>
-        public IPoint GetMatrixDimensions()
+        public void GetMatrixDimensions()
         {
             this.WriteService.Write(GeneralConstants.EnterMatrixDimensions);
 
@@ -72,7 +71,7 @@ namespace GreenVsRed.Services
             try
             {
                 var result = this.TryGetPoint(input, GeneralConstants.MatrixDimension, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
-                return result;
+                this.Matrix = new Matrix(result.X, result.Y);
             }
             catch (Exception e)
             {
@@ -93,12 +92,8 @@ namespace GreenVsRed.Services
         /// </summary>
         public void CreateMatrix()
         {
-            var matrixDemention = this.GetMatrixDimensions();
-            var matrixHeight = matrixDemention.CoordX();
-            var matrixWidth = matrixDemention.CoordY();
-            var matrix = new List<List<int>>();
-            this.WriteService.WriteLine(string.Format(GeneralConstants.EnterMatrix, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
-            for (int i = 0; i < matrixHeight; i++)
+            this.WriteService.WriteLine(string.Format(GeneralConstants.EnterMatrix, this.Matrix.Y, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+            for (int i = 0; i < this.Matrix.Y; i++)
             {
                 this.WriteService.Write(string.Format(GeneralConstants.EnterMatrixRow, i + 1));
                 var inputRow = this.ReadService.ReadLine();
@@ -106,27 +101,27 @@ namespace GreenVsRed.Services
                 // Validate allowed digits in matrix
                 if (!Regex.IsMatch(inputRow, RegXPattern.AllowedDigitsInMatrix))
                 {
-                    var errMsg = string.Format(ErrMsg.NotAllowedCharacterInLine, i + 1, inputRow, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
+                    var errMsg = string.Format(ErrMsg.NotAllowedCharacterInLine, i + 1, inputRow, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
                     this.WriteService.WriteLine(errMsg);
                     i--;
                     continue;
                 }
 
-                var listItem = inputRow
+                var args = inputRow
                      .ToCharArray()
                      .Select(ch => ch - '0')
                      .ToList();
 
                 // Validate row width
-                if (listItem.Count != matrixWidth)
+                if (args.Count != this.Matrix.X)
                 {
-                    var errMsg = string.Format(ErrMsg.NotCorrectDigitsCount, i + 1, inputRow, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
+                    var errMsg = string.Format(ErrMsg.NotCorrectDigitsCount, i + 1, inputRow, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
                     this.WriteService.WriteLine(errMsg);
                     i--;
                     continue;
                 }
 
-                this.Matrix.Add(listItem);
+                this.Matrix.State.Add(args);
             }
         }
 
@@ -135,18 +130,15 @@ namespace GreenVsRed.Services
         /// </summary>
         public void GetTargetConditions()
         {
-            var matrixHeight = this.Matrix.Count;
-            var matrixWidth = this.Matrix[0].Count;
-
             while (true)
             {
                 try
                 {
-                    this.WriteService.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+                    this.WriteService.Write(string.Format(GeneralConstants.EnterTargetConditions, this.Matrix.Y, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
 
                     var input = this.ReadService.ReadLine();
 
-                    this.TargetConditions = this.ValidateTargetConditions(input, matrixWidth, matrixHeight);
+                    this.TargetConditions = this.ValidateTargetConditions(input, this.Matrix.X, this.Matrix.Y);
 
                     this.WriteAllConditionsOk();
 
@@ -176,15 +168,15 @@ namespace GreenVsRed.Services
         {
             this.WriteService.WriteLine(GeneralConstants.WaitCalculations);
 
-            int coordX = this.TargetConditions.CoordX();
-            int coordY = this.TargetConditions.CoordY();
+            int coordX = this.TargetConditions.X;
+            int coordY = this.TargetConditions.Y;
             int rounds = this.TargetConditions.Rounds;
 
             var pointColor = this.GetPointColor(coordX, coordY);
             this.TargetPointColors.Add(pointColor);
             for (int i = 0; i < rounds; i++)
             {
-                this.Matrix = this.RoundNextMatrix();
+                this.Matrix.State = this.NextMatrixRound();
 
                 pointColor = this.GetPointColor(coordX, coordY);
                 this.TargetPointColors.Add(pointColor);
@@ -321,7 +313,7 @@ namespace GreenVsRed.Services
         // Receive point and return point color number.
         private int GetPointColor(int coordX, int coordY)
         {
-            var pointColor = this.Matrix[coordY][coordX];
+            var pointColor = this.Matrix.State[coordY][coordX];
 
             return pointColor;
         }
@@ -348,8 +340,8 @@ namespace GreenVsRed.Services
 
         private int CountSurroundedGreenColor(int row, int col)
         {
-            var maxRowIndex = this.Matrix.Count - 1;
-            var maxColIndex = this.Matrix[0].Count - 1;
+            var maxRowIndex = this.Matrix.Y - 1;
+            var maxColIndex = this.Matrix.X - 1;
             var rowBefore = row - 1;
             var rowAfter = row + 1;
             var colBefore = col - 1;
@@ -359,49 +351,49 @@ namespace GreenVsRed.Services
             // Get point color if exist for row before and col before
             if (rowBefore >= GeneralConstants.MinTargetPointX && colBefore >= GeneralConstants.MinTargetPointY)
             {
-                countSurroundedGreenPoints += this.Matrix[rowBefore][colBefore];
+                countSurroundedGreenPoints += this.Matrix.State[rowBefore][colBefore];
             }
 
             // Get point color if exist for row before and current col
             if (rowBefore >= GeneralConstants.MinTargetPointX)
             {
-                countSurroundedGreenPoints += this.Matrix[rowBefore][col];
+                countSurroundedGreenPoints += this.Matrix.State[rowBefore][col];
             }
 
             // Get point color if exist for row before and col afer
             if (rowBefore >= GeneralConstants.MinTargetPointX && colAfter <= maxColIndex)
             {
-                countSurroundedGreenPoints += this.Matrix[rowBefore][colAfter];
+                countSurroundedGreenPoints += this.Matrix.State[rowBefore][colAfter];
             }
 
             // Get point color if exist for row and col before
             if (colBefore >= GeneralConstants.MinTargetPointY)
             {
-                countSurroundedGreenPoints += this.Matrix[row][colBefore];
+                countSurroundedGreenPoints += this.Matrix.State[row][colBefore];
             }
 
             // Get point color if exist for row and col afer
             if (colAfter <= maxColIndex)
             {
-                countSurroundedGreenPoints += this.Matrix[row][colAfter];
+                countSurroundedGreenPoints += this.Matrix.State[row][colAfter];
             }
 
             // Get point color if exist for row afer and col before
             if (rowAfter <= maxRowIndex && colBefore >= GeneralConstants.MinTargetPointY)
             {
-                countSurroundedGreenPoints += this.Matrix[rowAfter][colBefore];
+                countSurroundedGreenPoints += this.Matrix.State[rowAfter][colBefore];
             }
 
             // Get point color if exist for row afer and col
             if (rowAfter <= maxRowIndex)
             {
-                countSurroundedGreenPoints += this.Matrix[rowAfter][col];
+                countSurroundedGreenPoints += this.Matrix.State[rowAfter][col];
             }
 
             // Get point color if exist for row afer and col after
             if (rowAfter <= maxRowIndex && colAfter <= maxColIndex)
             {
-                countSurroundedGreenPoints += this.Matrix[rowAfter][colAfter];
+                countSurroundedGreenPoints += this.Matrix.State[rowAfter][colAfter];
             }
 
             return countSurroundedGreenPoints;
@@ -420,17 +412,17 @@ namespace GreenVsRed.Services
         /// </return>
         private bool IsGreen(int x, int y)
         {
-            return this.Matrix[x][y] == GeneralConstants.GreenNumber;
+            return this.Matrix.State[x][y] == GeneralConstants.GreenNumber;
         }
 
-        private List<List<int>> RoundNextMatrix()
+        private List<List<int>> NextMatrixRound()
         {
             var nextGeneration = new List<List<int>>();
-            var endRow = this.Matrix.Count;
+            var endRow = this.Matrix.State.Count;
             for (int row = 0; row < endRow; row++)
             {
                 var tempNextRow = new List<int>();
-                var endCol = this.Matrix[row].Count;
+                var endCol = this.Matrix.State[row].Count;
                 for (int col = 0; col < endCol; col++)
                 {
                     var nextColor = this.GetNextPointColor(row, col);

@@ -40,6 +40,8 @@ namespace GreenVsRed
             {
                 try
                 {
+                    this.MatrixService.GetMatrixDimensions();
+
                     this.MatrixService.CreateMatrix();
 
                     this.MatrixService.GetTargetConditions();
