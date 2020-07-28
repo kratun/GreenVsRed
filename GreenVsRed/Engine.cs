@@ -22,13 +22,27 @@ namespace GreenVsRed
         /// </summary>
         public Engine()
         {
+            this.WriteService = new WriteService();
+            this.ReadService = new ReadService();
             this.MatrixService = new MatrixService();
         }
 
         /// <summary>
+        /// Service for writing text.
+        /// </summary>
+        /// <inheritdoc cref="IWrite"/>
+        private IWrite WriteService { get; set; }
+
+        /// <summary>
+        /// Service for reading text.
+        /// </summary>
+        /// <inheritdoc cref="IRead"/>
+        private IRead ReadService { get; set; }
+
+        /// <summary>
         /// Gets or sets properties and methods that used to create and recalculating matrix.
         /// </summary>
-        public IMatrixService MatrixService { get; set; }
+        private IMatrixService MatrixService { get; set; }
 
         /// <summary>
         /// Method that run game.
@@ -40,15 +54,15 @@ namespace GreenVsRed
             {
                 try
                 {
-                    this.MatrixService.GetMatrixDimensions();
+                    this.TryGetMatrixDeimensions();
 
-                    this.MatrixService.CreateMatrix();
+                    this.CreateMatrix();
 
-                    this.MatrixService.GetTargetConditions();
+                    this.GetTargetConditions();
 
-                    this.MatrixService.RecalculateMatrixNRounds();
+                    this.RecalculateMatrixNRounds();
 
-                    this.MatrixService.WriteExpectedResult();
+                    this.WriteExpectedResult();
                 }
                 catch (Exception e)
                 {
@@ -68,6 +82,103 @@ namespace GreenVsRed
                 }
 
                 this.MatrixService = new MatrixService();
+            }
+        }
+
+        private void RecalculateMatrixNRounds()
+        {
+            this.WriteService.WriteLine(GeneralConstants.WaitCalculations);
+
+            this.MatrixService.RecalculateMatrixNRounds();
+        }
+
+        private void WriteExpectedResult()
+        {
+            var result = this.MatrixService.GetTargetPointGreenColorsCount();
+            var strResult = GeneralConstants.ExpectedResult + result;
+            this.WriteService.WriteLine(strResult);
+        }
+
+        private void GetTargetConditions()
+        {
+            while (true)
+            {
+                try
+                {
+                    var matrixHeight = this.MatrixService.GetMatrixHeight();
+                    var matrixWidth = this.MatrixService.GetMatrixWidth();
+
+                    this.WriteService.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+
+                    var inputArgsStr = this.ReadService.ReadLine();
+
+                    this.MatrixService.GetGameConditions(inputArgsStr);
+
+                    this.WriteService.WriteLine(GeneralConstants.CorrectArgsStr);
+
+                    break;
+                }
+                catch (Exception e)
+                {
+                    if ((e is ArgumentException) || (e is ArgumentOutOfRangeException))
+                    {
+                        this.WriteService.WriteLine(e.Message);
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+                }
+            }
+        }
+
+        private void CreateMatrix()
+        {
+            var matrixHeight = this.MatrixService.GetMatrixHeight();
+            var matrixWidth = this.MatrixService.GetMatrixWidth();
+
+            this.WriteService.WriteLine(string.Format(GeneralConstants.EnterMatrix, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+
+            for (int i = 0; i < matrixHeight; i++)
+            {
+                try
+                {
+                    this.WriteService.Write(string.Format(GeneralConstants.EnterMatrixRow, i + 1));
+                    var inputArgsStr = this.ReadService.ReadLine();
+                    this.MatrixService.CreateMatrixRow(inputArgsStr);
+                }
+                catch (ArgumentException e)
+                {
+                    this.WriteService.WriteLine(e.Message);
+                    i--;
+                }
+            }
+        }
+
+        private bool TryGetMatrixDeimensions()
+        {
+            while (true)
+            {
+                this.WriteService.Write(GeneralConstants.EnterMatrixDimensions);
+
+                try
+                {
+                    var inputArgsSTr = this.ReadService.ReadLine();
+                    this.MatrixService.GetMatrixDimensions(inputArgsSTr);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    if (e is ArgumentException)
+                    {
+                        this.WriteService.WriteLine(e.Message);
+                        throw e;
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+                }
             }
         }
     }

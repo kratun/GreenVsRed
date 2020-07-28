@@ -53,5 +53,10 @@ namespace GreenVsRed.Common.Constants
         /// Error: Target point [X,Y] is out of range.
         /// </summary>
         public const string OutOfRangeTargetPoint = "Error: Target point [{0},{1}] is out of range";
+
+        /// <summary>
+        /// Error: Target point [X,Y] is out of range.
+        /// </summary>
+        public const string MatrixIsFull = "Error: Matrix is full. It is not possible to enter more rows.";
     }
 }

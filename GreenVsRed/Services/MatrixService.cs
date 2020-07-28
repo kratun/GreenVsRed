@@ -24,26 +24,12 @@ namespace GreenVsRed.Services
         /// </summary>
         public MatrixService()
         {
-            this.WriteService = new WriteService();
-            this.ReadService = new ReadService();
             this.TargetPointColors = new List<int>();
             this.Matrix = new Matrix();
             this.TargetConditions = new TargetConditions();
         }
 
         private ITargetConditions TargetConditions { get; set; }
-
-        /// <summary>
-        /// Service for writing text.
-        /// </summary>
-        /// <inheritdoc cref="IWrite"/>
-        private IWrite WriteService { get; set; }
-
-        /// <summary>
-        /// Service for reading text.
-        /// </summary>
-        /// <inheritdoc cref="IRead"/>
-        private IRead ReadService { get; set; }
 
         /// <summary>
         /// Gets or sets collection of each target point color during recalculation.
@@ -60,102 +46,78 @@ namespace GreenVsRed.Services
         /// <summary>
         /// Get matrix X (width) and Y (height).
         /// </summary>
+        /// <param name="inputArgsStr">A string contains two integers separated by comma.</param>
         /// <exception cref="ArgumentException">Thrown when line
         /// contains not allowed character or not enougth parameters.</exception>
-        public void GetMatrixDimensions()
+        public void GetMatrixDimensions(string inputArgsStr)
         {
-            this.WriteService.Write(GeneralConstants.EnterMatrixDimensions);
+            var result = this.TryGetPoint(inputArgsStr, GeneralConstants.MatrixDimension, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+            this.Matrix = new Matrix(result.X, result.Y);
+        }
 
-            var input = this.ReadService.ReadLine();
+        /// <summary>
+        /// Gets matrix Y (height).
+        /// </summary>
+        /// <returns>Matrix height.</returns>
+        public int GetMatrixHeight()
+        {
+            return this.Matrix.Y;
+        }
 
-            try
-            {
-                var result = this.TryGetPoint(input, GeneralConstants.MatrixDimension, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
-                this.Matrix = new Matrix(result.X, result.Y);
-            }
-            catch (Exception e)
-            {
-                if (e is ArgumentException)
-                {
-                    this.WriteService.WriteLine(e.Message);
-                    throw e;
-                }
-                else
-                {
-                    throw e;
-                }
-            }
+        /// <summary>
+        /// Gets matrix Y (width).
+        /// </summary>
+        /// <returns>Matrix width.</returns>
+        public int GetMatrixWidth()
+        {
+            return this.Matrix.X;
         }
 
         /// <summary>
         /// Create matrix from the input.
         /// </summary>
-        public void CreateMatrix()
+        /// <param name="inputArgsStr">Matrix row as string.</param>
+        /// <exception cref="ArgumentException">Throw when input contains not enogth or not allowed charakters.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Throw when matrix is full.</exception>
+        public void CreateMatrixRow(string inputArgsStr)
         {
-            this.WriteService.WriteLine(string.Format(GeneralConstants.EnterMatrix, this.Matrix.Y, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
-            for (int i = 0; i < this.Matrix.Y; i++)
+            var currentMatrixWidth = this.Matrix.State.Count;
+            if (currentMatrixWidth == this.Matrix.Y)
             {
-                this.WriteService.Write(string.Format(GeneralConstants.EnterMatrixRow, i + 1));
-                var inputRow = this.ReadService.ReadLine();
-
-                // Validate allowed digits in matrix
-                if (!Regex.IsMatch(inputRow, RegXPattern.AllowedDigitsInMatrix))
-                {
-                    var errMsg = string.Format(ErrMsg.NotAllowedCharacterInLine, i + 1, inputRow, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
-                    this.WriteService.WriteLine(errMsg);
-                    i--;
-                    continue;
-                }
-
-                var args = inputRow
-                     .ToCharArray()
-                     .Select(ch => ch - '0')
-                     .ToList();
-
-                // Validate row width
-                if (args.Count != this.Matrix.X)
-                {
-                    var errMsg = string.Format(ErrMsg.NotCorrectDigitsCount, i + 1, inputRow, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
-                    this.WriteService.WriteLine(errMsg);
-                    i--;
-                    continue;
-                }
-
-                this.Matrix.State.Add(args);
+                throw new ArgumentOutOfRangeException(ErrMsg.MatrixIsFull);
             }
+
+            // Validate allowed digits in matrix
+            if (!Regex.IsMatch(inputArgsStr, RegXPattern.AllowedDigitsInMatrix))
+            {
+                throw new ArgumentException(string.Format(ErrMsg.NotAllowedCharacterInLine, currentMatrixWidth, inputArgsStr, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+            }
+
+            var args = inputArgsStr
+                    .ToCharArray()
+                    .Select(ch => ch - '0')
+                    .ToList();
+
+            // Validate row width
+            if (args.Count != this.Matrix.X)
+            {
+                throw new ArgumentException(string.Format(ErrMsg.NotCorrectDigitsCount, currentMatrixWidth, inputArgsStr, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+            }
+
+            this.Matrix.State.Add(args);
         }
 
         /// <summary>
-        /// Get target point dimensions and rounds to recalculate matrix.
+        /// Get target point dimensions X and Y and rounds to recalculate matrix.
         /// </summary>
-        public void GetTargetConditions()
+        /// <param name="inputArgsStr">three integers separated with comma: target point X and Y and N rounds to recalculate matrix.</param>
+        /// <exception cref="ArgumentException">Thrown when line
+        /// contains not enougth or correct parameters.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when
+        /// point with coordX and coordY does not exist.</exception>
+        public void GetGameConditions(string inputArgsStr)
         {
-            while (true)
-            {
-                try
-                {
-                    this.WriteService.Write(string.Format(GeneralConstants.EnterTargetConditions, this.Matrix.Y, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
-
-                    var input = this.ReadService.ReadLine();
-
-                    this.TargetConditions = this.ValidateTargetConditions(input, this.Matrix.X, this.Matrix.Y);
-
-                    this.WriteAllConditionsOk();
-
-                    break;
-                }
-                catch (Exception e)
-                {
-                    if ((e is ArgumentException) || (e is ArgumentOutOfRangeException))
-                    {
-                        this.WriteService.WriteLine(e.Message);
-                    }
-                    else
-                    {
-                        throw e;
-                    }
-                }
-            }
+            this.TargetConditions = this.ValidateTargetConditions(inputArgsStr, this.Matrix.X, this.Matrix.Y);
         }
 
         /// <summary>
@@ -166,8 +128,6 @@ namespace GreenVsRed.Services
         /// <param name="rounds">Matrix recalculation rounds.</param>
         public void RecalculateMatrixNRounds()
         {
-            this.WriteService.WriteLine(GeneralConstants.WaitCalculations);
-
             int coordX = this.TargetConditions.X;
             int coordY = this.TargetConditions.Y;
             int rounds = this.TargetConditions.Rounds;
@@ -184,13 +144,14 @@ namespace GreenVsRed.Services
         }
 
         /// <summary>
-        /// Write expected result.
+        /// Gets how many times target point become green.
         /// </summary>
-        public void WriteExpectedResult()
+        /// <returns>How many time taget point become green.</returns>
+        public int GetTargetPointGreenColorsCount()
         {
             var result = this.TargetPointColors.Where(c => c == GeneralConstants.GreenNumber).ToList().Count;
-            var strResult = GeneralConstants.ExpectedResult + result;
-            this.WriteService.WriteLine(strResult);
+
+            return result;
         }
 
         private IPoint TryGetPoint(string input, int validArgsCount, int minSize, int maxSize)
@@ -303,11 +264,6 @@ namespace GreenVsRed.Services
             var targetConditions = new TargetConditions(coordX, coordY, rounds);
 
             return targetConditions;
-        }
-
-        private void WriteAllConditionsOk()
-        {
-            this.WriteService.WriteLine(GeneralConstants.CorrectArgsStr);
         }
 
         // Receive point and return point color number.
