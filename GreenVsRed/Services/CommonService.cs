@@ -13,7 +13,7 @@ namespace GreenVsRed.Services
     public static class CommonService
     {
         /// <summary>
-        /// Ask question and wainting for response "Yes" or "No".
+        /// Ask "Do you want to proceed?" and wainting for response "Yes" or "No".
         /// </summary>
         /// <returns>True or false.</returns>
         public static bool WantToProceed()

@@ -31,31 +31,31 @@ namespace GreenVsRed.Services
             this.TargetConditions = new TargetConditions();
         }
 
-        public ITargetConditions TargetConditions { get; set; }
+        private ITargetConditions TargetConditions { get; set; }
 
         /// <summary>
         /// Service for writing text.
         /// </summary>
         /// <inheritdoc cref="IWrite"/>
-        public IWrite WriteService { get; set; }
+        private IWrite WriteService { get; set; }
 
         /// <summary>
         /// Service for reading text.
         /// </summary>
         /// <inheritdoc cref="IRead"/>
-        public IRead ReadService { get; set; }
+        private IRead ReadService { get; set; }
 
         /// <summary>
         /// Gets or sets collection of each target point color during recalculation.
         /// </summary>
         /// <inheritdoc cref="List{T}"/>
-        public List<int> TargetPointColors { get; set; }
+        private List<int> TargetPointColors { get; set; }
 
         /// <summary>
         /// Gets or sets current matrix state.
         /// </summary>
         /// <inheritdoc cref="List{T}"/>
-        public List<List<int>> Matrix { get; set; }
+        private List<List<int>> Matrix { get; set; }
 
         /// <summary>
         /// Get matrix width and height.
@@ -86,15 +86,11 @@ namespace GreenVsRed.Services
                     throw e;
                 }
             }
-
         }
 
         /// <summary>
         /// Create matrix from the input.
         /// </summary>
-        /// <param name="matrixWidth">Matrix width.</param>
-        /// <param name="matrixHeight">Matrix height.</param>
-        /// <returns>Created matrix.</returns>
         public void CreateMatrix()
         {
             var matrixDemention = this.GetMatrixDimensions();
@@ -121,7 +117,6 @@ namespace GreenVsRed.Services
                      .Select(ch => ch - '0')
                      .ToList();
 
-
                 // Validate row width
                 if (listItem.Count != matrixWidth)
                 {
@@ -140,21 +135,20 @@ namespace GreenVsRed.Services
         /// </summary>
         public void GetTargetConditions()
         {
-            // TODO ITargetConditions
             var matrixHeight = this.Matrix.Count;
             var matrixWidth = this.Matrix[0].Count;
-            ITargetConditions targetConditions = new TargetConditions();
+
             while (true)
             {
                 try
                 {
-                    WriteService.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+                    this.WriteService.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
 
-                    var input = ReadService.ReadLine();
+                    var input = this.ReadService.ReadLine();
 
-                    this.TargetConditions = ValidateTargetConditions(input, matrixWidth, matrixHeight);
+                    this.TargetConditions = this.ValidateTargetConditions(input, matrixWidth, matrixHeight);
 
-                    WriteAllConditionsOk();
+                    this.WriteAllConditionsOk();
 
                     break;
                 }
@@ -162,13 +156,14 @@ namespace GreenVsRed.Services
                 {
                     if ((e is ArgumentException) || (e is ArgumentOutOfRangeException))
                     {
-                        WriteService.WriteLine(e.Message);
+                        this.WriteService.WriteLine(e.Message);
                     }
-                    else { throw e; }
-
+                    else
+                    {
+                        throw e;
+                    }
                 }
             }
-
         }
 
         /// <summary>
@@ -196,6 +191,16 @@ namespace GreenVsRed.Services
             }
         }
 
+        /// <summary>
+        /// Write expected result.
+        /// </summary>
+        public void WriteExpectedResult()
+        {
+            var result = this.TargetPointColors.Where(c => c == GeneralConstants.GreenNumber).ToList().Count;
+            var strResult = GeneralConstants.ExpectedResult + result;
+            this.WriteService.WriteLine(strResult);
+        }
+
         private IPoint TryGetPoint(string input, int validArgsCount, int minSize, int maxSize)
         {
             var separators = new char[] { ',', ' ' };
@@ -204,15 +209,15 @@ namespace GreenVsRed.Services
                 .Split(separators, StringSplitOptions.RemoveEmptyEntries)
                 .ToArray();
 
-            // Validate first line that contain two argument 
+            // Validate first line that contain two argument
             if (!Regex.IsMatch(input, RegXPattern.FirstLine) || args.Length != validArgsCount)
             {
                 var errMsg = ErrMsg.MatrixDimentionException;
                 throw new ArgumentException(errMsg);
             }
 
-
             int height;
+
             // Validate Height that is number between Min and Max possible
             if (!int.TryParse(args[1], out height) || height < minSize || height > maxSize)
             {
@@ -221,6 +226,7 @@ namespace GreenVsRed.Services
             }
 
             int width;
+
             // Validate Width that is number between Min and Max possible
             if (!int.TryParse(args[0], out width) || width < GeneralConstants.MinMatrixSize || width > GeneralConstants.MaxMatrixSize || width > height)
             {
@@ -233,10 +239,9 @@ namespace GreenVsRed.Services
             return point;
         }
 
-
-        /// <exception cref="ArgumentException">Thrown when line 
+        /// <exception cref="ArgumentException">Thrown when line
         /// contains not enougth or correct parameters.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when    
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when
         /// point with coordX and coordY does not exist.</exception>
         private ITargetConditions ValidateTargetConditions(string input, int matrixWidth, int matrixHeight)
         {
@@ -245,7 +250,7 @@ namespace GreenVsRed.Services
                         .Split(separators, StringSplitOptions.RemoveEmptyEntries)
                         .ToList();
 
-            // Validate first line that contain three argument 
+            // Validate first line that contain three argument
             var isValidInput = Regex.IsMatch(input, RegXPattern.TargetConditions);
             if (!isValidInput || args.Count != GeneralConstants.TargetConditionsCount)
             {
@@ -277,21 +282,21 @@ namespace GreenVsRed.Services
                 errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth - 1);
                 errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinTargetPointY, matrixHeight - 1);
 
-                throw new ArgumentOutOfRangeException("", errMsg);
+                throw new ArgumentOutOfRangeException(string.Empty, errMsg);
             }
             else if (coordX < GeneralConstants.MinTargetPointX || coordX >= matrixWidth)
             {
                 var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY, GeneralConstants.MinTargetPointX, matrixWidth - 1, GeneralConstants.MinTargetPointY, matrixHeight - 1);
                 errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth - 1);
 
-                throw new ArgumentOutOfRangeException("", errMsg);
+                throw new ArgumentOutOfRangeException(string.Empty, errMsg);
             }
             else if (coordY < GeneralConstants.MinTargetPointY || coordY >= matrixHeight)
             {
                 var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY);
                 errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinTargetPointY, matrixHeight - 1);
 
-                throw new ArgumentOutOfRangeException("", errMsg);
+                throw new ArgumentOutOfRangeException(string.Empty, errMsg);
             }
 
             int rounds;
@@ -311,13 +316,6 @@ namespace GreenVsRed.Services
         private void WriteAllConditionsOk()
         {
             this.WriteService.WriteLine(GeneralConstants.CorrectArgsStr);
-        }
-
-        public void WriteExpectedResult()
-        {
-            var result = this.TargetPointColors.Where(c => c == GeneralConstants.GreenNumber).ToList().Count;
-            var strResult = GeneralConstants.ExpectedResult + result;
-            this.WriteService.WriteLine(strResult);
         }
 
         // Receive point and return point color number.

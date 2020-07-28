@@ -9,27 +9,23 @@ namespace GreenVsRed.Services
     using GreenVsRed.Models;
 
     /// <summary>
-    /// Provides properties and methods that create and recalculating matrix N times.
+    /// Provides methods that create and recalculate matrix N times.
     /// </summary>
     public interface IMatrixService
     {
         /// <summary>
-        /// Gets or sets current matrix state.
-        /// </summary>
-        List<List<int>> Matrix { get; set; }
-
-        /// <summary>
-        /// Gets or sets collection of each target point color during recalculation.
-        /// </summary>
-        List<int> TargetPointColors { get; set; }
-
-        /// <summary>
-        /// Create matrix from the input.
+        /// Create matrix from input.
         /// </summary>
         void CreateMatrix();
 
+        /// <summary>
+        /// Get target point dimensions and rounds to recalculate matrix.
+        /// </summary>
         void GetTargetConditions();
 
+        /// <summary>
+        /// Write expected result.
+        /// </summary>
         void WriteExpectedResult();
 
         /// <summary>

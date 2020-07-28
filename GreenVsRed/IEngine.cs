@@ -1,4 +1,8 @@
-﻿namespace GreenVsRed
+﻿// <copyright file="IEngine.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace GreenVsRed
 {
     using System;
 
