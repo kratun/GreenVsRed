@@ -20,14 +20,24 @@ namespace GreenVsRed.Common.Constants
         public const string MatrixDimentionException = "Error: Please write width and height of the matrix in pattern \"width, height\"";
 
         /// <summary>
-        /// Error: Width must be integer between MIN and MAX and can not be greater then height - "width, height".
+        /// Error: Width must be an integer between MIN and MAX and can not be greater then height - "width, height".
         /// </summary>
-        public const string NotCorrectWidth = "Error: Width must be integer between {0} and {1} and can not be greater then height - \"width, height\"";
+        public const string NotCorrectWidth = "Error: Width must be an integer between {0} and {1} and can not be greater then height - \"width, height\"";
 
         /// <summary>
-        /// Error: Height must be integer between MIN and MAX.
+        /// Error: Width is out of range. It must be an integer between MIN and MAX and can not be greater then height - "width, height".
         /// </summary>
-        public const string NotCorrectHeight = "Error: Height must be integer between {0} and {1} - \"width, height\"";
+        public const string OutOfRangeWidth = "Error: Width is out of range. It must be an integer between {0} and {1} and can not be greater then height";
+
+        /// <summary>
+        /// Error: Height must be an integer between MIN and MAX.
+        /// </summary>
+        public const string NotCorrectHeight = "Error: Height must be an integer between {0} and {1} - \"width, height\"";
+
+        /// <summary>
+        /// Error: Height is out of range. It must be an integer between MIN and MAX and can not be greater then height - "width, height".
+        /// </summary>
+        public const string OutOfRangeHeight = "Error: Height is out of range. It must be an integer between {0} and {1}";
 
         /// <summary>
         /// Error: The line must contains digits equal to the Matrix Width digits (1 for green or 0 for red) without space between.

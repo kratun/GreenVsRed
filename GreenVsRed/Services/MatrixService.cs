@@ -49,9 +49,10 @@ namespace GreenVsRed.Services
         /// <param name="inputArgsStr">A string contains two integers separated by comma.</param>
         /// <exception cref="ArgumentException">Thrown when line
         /// contains not allowed character or not enougth parameters.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when X (width) or Y (heght) are out of game range.</exception>
         public void GetMatrixDimensions(string inputArgsStr)
         {
-            var result = this.TryGetPoint(inputArgsStr, GeneralConstants.MatrixDimension, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+            var result = this.TryGetPoint(inputArgsStr);
             this.Matrix = new Matrix(result.X, result.Y);
         }
 
@@ -154,42 +155,74 @@ namespace GreenVsRed.Services
             return result;
         }
 
-        private IPoint TryGetPoint(string input, int validArgsCount, int minSize, int maxSize)
+        /// <exception cref="ArgumentException">Thrown when line
+        /// contains not allowed character or not enougth parameters.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when X (width) or Y (heght) are out of game range or X>Y.</exception>
+        private IPoint TryGetPoint(string inputArgsStr)
         {
             var separators = new char[] { ',', ' ' };
 
-            var args = input
+            var args = inputArgsStr
                 .Split(separators, StringSplitOptions.RemoveEmptyEntries)
                 .ToArray();
 
+            var errMsg = string.Empty;
+
             // Validate first line that contain two argument
-            if (!Regex.IsMatch(input, RegXPattern.FirstLine) || args.Length != validArgsCount)
-            {
-                var errMsg = ErrMsg.MatrixDimentionException;
-                throw new ArgumentException(errMsg);
-            }
+            errMsg = ErrMsg.MatrixDimentionException;
+            var inputArgsPattern = RegXPattern.FirstLine;
+            this.ValidateInputArgsStr(inputArgsStr, GeneralConstants.MatrixDimension, args, errMsg, inputArgsPattern);
 
-            int height;
+            // Validate that Width is intereger
+            errMsg = string.Format(ErrMsg.NotCorrectWidth, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+            int width = this.TryGetDimension(args[0], errMsg);
 
-            // Validate Height that is number between Min and Max possible
-            if (!int.TryParse(args[1], out height) || height < minSize || height > maxSize)
-            {
-                var errMsg = string.Format(ErrMsg.NotCorrectHeight, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
-                throw new ArgumentException(errMsg);
-            }
+            // Validate that Height is intereger
+            errMsg = string.Format(ErrMsg.NotCorrectHeight, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+            int height = this.TryGetDimension(args[1], errMsg);
 
-            int width;
+            // Validate Height that is an integer between Min and Max possible
+            errMsg = string.Format(ErrMsg.OutOfRangeHeight, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+            this.IsNotDimensionOutOfRange(errMsg, height, height);
 
-            // Validate Width that is number between Min and Max possible
-            if (!int.TryParse(args[0], out width) || width < GeneralConstants.MinMatrixSize || width > GeneralConstants.MaxMatrixSize || width > height)
-            {
-                var errMsg = string.Format(ErrMsg.NotCorrectWidth, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
-                throw new ArgumentException(errMsg);
-            }
+            // Validate Width that is an integer between Min and Max possible
+            errMsg = string.Format(ErrMsg.OutOfRangeWidth, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
+            this.IsNotDimensionOutOfRange(errMsg, width, height);
 
             var point = new Point(width, height);
 
             return point;
+        }
+
+        private bool IsNotDimensionOutOfRange(string errMsg, int x, int y)
+        {
+            if (x < GeneralConstants.MinMatrixSize || x > GeneralConstants.MaxMatrixSize || !(x <= y))
+            {
+                throw new ArgumentOutOfRangeException(errMsg, new Exception());
+            }
+
+            return true;
+        }
+
+        private int TryGetDimension(string arg, string errMsg)
+        {
+            int height;
+            if (!int.TryParse(arg, out height))
+            {
+                throw new ArgumentException(errMsg);
+            }
+
+            return height;
+        }
+
+        private bool ValidateInputArgsStr(string inputArgsStr, int validArgsCount, string[] args, string errMsg, string inputArgsPattern)
+        {
+            if (!Regex.IsMatch(inputArgsStr, inputArgsPattern) || args.Length != validArgsCount)
+            {
+                throw new ArgumentException(errMsg);
+            }
+
+            return true;
         }
 
         /// <exception cref="ArgumentException">Thrown when line
