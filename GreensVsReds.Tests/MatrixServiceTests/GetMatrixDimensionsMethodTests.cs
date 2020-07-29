@@ -1,4 +1,4 @@
-﻿namespace GreensVsReds.Tests
+﻿namespace GreensVsReds.Tests.MatrixServiceTests
 {
     using System;
     using Xunit;
@@ -6,10 +6,10 @@
     using GreenVsRed.Services;
     using GreenVsRed.Common.Constants;
 
-    public class MatrixServiceTests
+    public class GetMatrixDimensionsMethodTests
     {
         [Fact]
-        public void GetMatrixDimensionsWorks()
+        public void WorksCorrect()
         {
             var validWidthX = 3;
             var validHeightY = 3;
@@ -24,7 +24,7 @@
         }
 
         [Fact]
-        public void GetMatrixDimensionsErrorMissingXY()
+        public void ReturnErrorMissingXY()
         {
             var inputArgsStr = $"";
 
@@ -42,7 +42,7 @@
         }
 
         [Fact]
-        public void GetMatrixDimensionsErrorMissingX()
+        public void ErrorMissingX()
         {
             var validHeightY = 3;
 
@@ -57,12 +57,12 @@
             catch (Exception e)
             {
                 var errMsg = ErrMsg.MatrixDimentionException;
-                Assert.Equal(errMsg,e.Message);
+                Assert.Equal(errMsg, e.Message);
             }
         }
 
         [Fact]
-        public void GetMatrixDimensionsErrorMissingY()
+        public void ReturnErrorMissingY()
         {
             var validWidthX = 3;
 
@@ -82,7 +82,7 @@
         }
 
         [Fact]
-        public void GetMatrixDimensionsErrorOutOfRangeX()
+        public void ReturnErrorOutOfRangeX()
         {
             var widthX = 1000;
             var heightY = 3;
@@ -103,7 +103,7 @@
         }
 
         [Fact]
-        public void GetMatrixDimensionsErrorOutOfRangeXGreaterY()
+        public void ReturnErrorOutOfRangeXGreaterY()
         {
             var widthX = 5;
             var heightY = 3;
@@ -124,7 +124,7 @@
         }
 
         [Fact]
-        public void GetMatrixDimensionsErrorOutOfRangeY()
+        public void ReturnErrorOutOfRangeY()
         {
             var widthX = 3;
             var heightY = 1000;

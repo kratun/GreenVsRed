@@ -78,20 +78,24 @@ namespace GreenVsRed.Services
         /// Create matrix from the input.
         /// </summary>
         /// <param name="inputArgsStr">Matrix row as string.</param>
-        /// <exception cref="ArgumentException">Throw when input contains not enogth or not allowed charakters.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Throw when matrix is full.</exception>
-        public void CreateMatrixRow(string inputArgsStr)
+        /// <returns>True if matrix row is add.</returns>
+        /// <exception cref="ArgumentException">Throw when input contains not allowed charakters.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Throw when the row constains less/more characters or the matrix is full.</exception>
+        public bool CreateMatrixRow(string inputArgsStr)
         {
             var currentMatrixWidth = this.Matrix.State.Count;
             if (currentMatrixWidth == this.Matrix.Y)
             {
-                throw new ArgumentOutOfRangeException(ErrMsg.MatrixIsFull);
+                throw new ArgumentOutOfRangeException(ErrMsg.MatrixIsFull, new Exception());
             }
+
+            var errMsg = string.Empty;
 
             // Validate allowed digits in matrix
             if (!Regex.IsMatch(inputArgsStr, RegXPattern.AllowedDigitsInMatrix))
             {
-                throw new ArgumentException(string.Format(ErrMsg.NotAllowedCharacterInLine, currentMatrixWidth, inputArgsStr, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+                errMsg = string.Format(ErrMsg.NotAllowedCharacterInLine, currentMatrixWidth + 1, inputArgsStr, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
+                throw new ArgumentException(errMsg);
             }
 
             var args = inputArgsStr
@@ -102,10 +106,13 @@ namespace GreenVsRed.Services
             // Validate row width
             if (args.Count != this.Matrix.X)
             {
-                throw new ArgumentException(string.Format(ErrMsg.NotCorrectDigitsCount, currentMatrixWidth, inputArgsStr, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
+                errMsg = string.Format(ErrMsg.NotCorrectDigitsCount, currentMatrixWidth + 1, inputArgsStr, this.Matrix.X, GeneralConstants.GreenNumber, GeneralConstants.RedNumber);
+                throw new ArgumentOutOfRangeException(errMsg, new Exception());
             }
 
             this.Matrix.State.Add(args);
+
+            return true;
         }
 
         /// <summary>
