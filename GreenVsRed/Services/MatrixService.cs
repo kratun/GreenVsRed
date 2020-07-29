@@ -137,7 +137,8 @@ namespace GreenVsRed.Services
         /// <param name="coordX">Point coordinate X.</param>
         /// <param name="coordY">Point coordinate Y.</param>
         /// <param name="rounds">Matrix recalculation rounds.</param>
-        public void RecalculateMatrixNRounds()
+        /// <returns>Return true if recalslation finished.</returns>
+        public bool RecalculateMatrixNRounds()
         {
             int coordX = this.TargetConditions.X;
             int coordY = this.TargetConditions.Y;
@@ -152,6 +153,8 @@ namespace GreenVsRed.Services
                 pointColor = this.GetPointColor(coordX, coordY);
                 this.TargetPointColors.Add(pointColor);
             }
+
+            return true;
         }
 
         /// <summary>
@@ -275,6 +278,7 @@ namespace GreenVsRed.Services
             return targetConditions;
         }
 
+        // Validate value and return true if is valid
         private bool ValidatePointOutOfRange(int value, int minValue, int maxValue, string errMsg)
         {
             if (value < minValue || value > maxValue)

@@ -85,18 +85,18 @@ namespace GreenVsRed
             }
         }
 
-        private void RecalculateMatrixNRounds()
-        {
-            this.WriteService.WriteLine(GeneralConstants.WaitCalculations);
-
-            this.MatrixService.RecalculateMatrixNRounds();
-        }
-
         private void WriteExpectedResult()
         {
             var result = this.MatrixService.GetTargetPointGreenColorsCount();
             var strResult = GeneralConstants.ExpectedResult + result;
             this.WriteService.WriteLine(strResult);
+        }
+
+        private void RecalculateMatrixNRounds()
+        {
+            this.WriteService.WriteLine(GeneralConstants.WaitCalculations);
+
+            this.MatrixService.RecalculateMatrixNRounds();
         }
 
         private void GetTargetConditions()

@@ -59,6 +59,7 @@ namespace GreenVsRed.Services
         /// <summary>
         /// Method who recalculate Matrix N rounds and return how many times the target point become green.
         /// </summary>
-        void RecalculateMatrixNRounds();
+        /// <returns>Return true if recalslation finished.</returns>
+        bool RecalculateMatrixNRounds();
     }
 }
