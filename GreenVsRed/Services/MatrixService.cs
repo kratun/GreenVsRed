@@ -119,13 +119,16 @@ namespace GreenVsRed.Services
         /// Get target point dimensions X and Y and rounds to recalculate matrix.
         /// </summary>
         /// <param name="inputArgsStr">three integers separated with comma: target point X and Y and N rounds to recalculate matrix.</param>
+        /// <returns>Returns true if all arguments are Ok.</returns>
         /// <exception cref="ArgumentException">Thrown when line
         /// contains not enougth or correct parameters.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when
         /// point with coordX and coordY does not exist.</exception>
-        public void GetGameConditions(string inputArgsStr)
+        public bool GetGameConditions(string inputArgsStr)
         {
             this.TargetConditions = this.ValidateTargetConditions(inputArgsStr, this.Matrix.X, this.Matrix.Y);
+
+            return true;
         }
 
         /// <summary>
@@ -182,11 +185,11 @@ namespace GreenVsRed.Services
 
             // Validate that Width is intereger
             errMsg = string.Format(ErrMsg.NotCorrectWidth, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
-            int width = this.TryGetDimension(args[0], errMsg);
+            int width = this.TryGetIntValue(args[0], errMsg);
 
             // Validate that Height is intereger
             errMsg = string.Format(ErrMsg.NotCorrectHeight, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
-            int height = this.TryGetDimension(args[1], errMsg);
+            int height = this.TryGetIntValue(args[1], errMsg);
 
             // Validate Height that is an integer between Min and Max possible
             errMsg = string.Format(ErrMsg.OutOfRangeHeight, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
@@ -211,15 +214,15 @@ namespace GreenVsRed.Services
             return true;
         }
 
-        private int TryGetDimension(string arg, string errMsg)
+        private int TryGetIntValue(string arg, string errMsg)
         {
-            int height;
-            if (!int.TryParse(arg, out height))
+            int value;
+            if (!int.TryParse(arg, out value))
             {
                 throw new ArgumentException(errMsg);
             }
 
-            return height;
+            return value;
         }
 
         private bool ValidateInputArgsStr(string inputArgsStr, int validArgsCount, string[] args, string errMsg, string inputArgsPattern)
@@ -236,74 +239,75 @@ namespace GreenVsRed.Services
         /// contains not enougth or correct parameters.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when
         /// point with coordX and coordY does not exist.</exception>
-        private ITargetConditions ValidateTargetConditions(string input, int matrixWidth, int matrixHeight)
+        private ITargetConditions ValidateTargetConditions(string inputArgsStr, int matrixWidth, int matrixHeight)
         {
             var separators = new char[] { ',', ' ' };
-            var args = input
+            var args = inputArgsStr
                         .Split(separators, StringSplitOptions.RemoveEmptyEntries)
-                        .ToList();
+                        .ToArray();
 
             // Validate first line that contain three argument
-            var isValidInput = Regex.IsMatch(input, RegXPattern.TargetConditions);
-            if (!isValidInput || args.Count != GeneralConstants.TargetConditionsCount)
-            {
-                var errMsg = ErrMsg.TargetConditionsException;
-                throw new ArgumentException(errMsg);
-            }
+            var errMsg = ErrMsg.TargetConditionsException;
+            this.ValidateInputArgsStr(inputArgsStr, GeneralConstants.TargetConditionsCount, args, errMsg, RegXPattern.TargetConditions);
 
-            int coordX;
+            // Validate Target Point X.
+            errMsg = string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth - 1);
+            int coordX = this.TryGetIntValue(args[0], errMsg);
 
-            // Validate Target Point X. Integer between Min Target Point X and Matrix Width
-            if (!int.TryParse(args[0], out coordX))
-            {
-                var errMsg = string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth);
-                throw new ArgumentException(nameof(coordX), errMsg);
-            }
-
-            int coordY;
+            // Validate Target Point Y.
+            errMsg = string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinMatrixSize, matrixHeight - 1);
+            int coordY = this.TryGetIntValue(args[1], errMsg);
 
             // Validate Target Point Y. Integer between Min Target Point Y and Matrix Width
-            if (!int.TryParse(args[1], out coordY))
-            {
-                var errMsg = string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinMatrixSize, matrixHeight);
-                throw new ArgumentException(errMsg);
-            }
-
-            if ((coordX < GeneralConstants.MinTargetPointX || coordX >= matrixWidth) && (coordY < GeneralConstants.MinTargetPointY || coordY >= matrixHeight))
-            {
-                var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY, GeneralConstants.MinTargetPointX, matrixWidth - 1, GeneralConstants.MinTargetPointY, matrixHeight - 1);
-                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth - 1);
-                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinTargetPointY, matrixHeight - 1);
-
-                throw new ArgumentOutOfRangeException(string.Empty, errMsg);
-            }
-            else if (coordX < GeneralConstants.MinTargetPointX || coordX >= matrixWidth)
-            {
-                var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY, GeneralConstants.MinTargetPointX, matrixWidth - 1, GeneralConstants.MinTargetPointY, matrixHeight - 1);
-                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointX, GeneralConstants.MinTargetPointX, matrixWidth - 1);
-
-                throw new ArgumentOutOfRangeException(string.Empty, errMsg);
-            }
-            else if (coordY < GeneralConstants.MinTargetPointY || coordY >= matrixHeight)
-            {
-                var errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY);
-                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointY, GeneralConstants.MinTargetPointY, matrixHeight - 1);
-
-                throw new ArgumentOutOfRangeException(string.Empty, errMsg);
-            }
-
-            int rounds;
+            errMsg = string.Format(ErrMsg.OutOfRangeTargetPoint, coordX, coordY);
+            this.ValidatePointOutOfRange(matrixWidth, matrixHeight, errMsg, coordX, coordY, GeneralConstants.MinTargetPointX, GeneralConstants.MinTargetPointY);
 
             // Validate Rounds. Integer between Min and Max possible rounds
-            if (!int.TryParse(args[2], out rounds) || rounds < GeneralConstants.MinRounds || rounds > GeneralConstants.MaxRounds)
-            {
-                var errMsg = string.Format(ErrMsg.NotCorrectWidth, GeneralConstants.MinMatrixSize, GeneralConstants.MaxMatrixSize);
-                throw new ArgumentException(errMsg);
-            }
+            errMsg = string.Format(ErrMsg.NotCorrectRounds, GeneralConstants.MinRounds, GeneralConstants.MaxRounds);
+            int rounds = this.TryGetIntValue(args[2], errMsg);
+
+            // Validate out of range rounds
+            errMsg = string.Format(ErrMsg.OutOfRangeRounds);
+            this.ValidatePointOutOfRange(rounds, GeneralConstants.MinRounds, GeneralConstants.MaxRounds, errMsg);
 
             var targetConditions = new TargetConditions(coordX, coordY, rounds);
 
             return targetConditions;
+        }
+
+        private bool ValidatePointOutOfRange(int value, int minValue, int maxValue, string errMsg)
+        {
+            if (value < minValue || value > maxValue)
+            {
+                throw new ArgumentOutOfRangeException(string.Empty, errMsg);
+            }
+
+            return true;
+        }
+
+        private bool ValidatePointOutOfRange(int matrixWidth, int matrixHeight, string errMsg, int coordX, int coordY, int minTargetPointX, int minTargetPointY)
+        {
+            if ((coordX < minTargetPointX || coordX > matrixWidth - 1) && (coordY < minTargetPointY || coordY > matrixHeight - 1))
+            {
+                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointX, minTargetPointX, matrixWidth - 1);
+                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointY, minTargetPointY, matrixHeight - 1);
+
+                throw new ArgumentOutOfRangeException(string.Empty, errMsg);
+            }
+            else if (coordX < minTargetPointX || coordX > matrixWidth - 1)
+            {
+                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointX, minTargetPointX, matrixWidth - 1);
+
+                throw new ArgumentOutOfRangeException(string.Empty, errMsg);
+            }
+            else if (coordY < minTargetPointY || coordY > matrixHeight - 1)
+            {
+                errMsg += "\n" + string.Format(ErrMsg.NotCorrectTargetPointY, minTargetPointY, matrixHeight - 1);
+
+                throw new ArgumentOutOfRangeException(string.Empty, errMsg);
+            }
+
+            return true;
         }
 
         // Receive point and return point color number.

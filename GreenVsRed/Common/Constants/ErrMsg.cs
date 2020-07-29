@@ -60,13 +60,23 @@ namespace GreenVsRed.Common.Constants
         public const string NotCorrectTargetPointX = "Error: Point X must be an integer between {0} and {1}";
 
         /// <summary>
+        /// Error: Rounds must be an integer between MIN and MAX.
+        /// </summary>
+        public const string NotCorrectRounds = "Error: Rounds must be an integer between {0} and {1}";
+
+        /// <summary>
         /// Error: Target point [X,Y] is out of range.
         /// </summary>
-        public const string OutOfRangeTargetPoint = "Error: Target point [{0},{1}] is out of range";
+        public const string OutOfRangeTargetPoint = "Error: Target point [{0},{1}] is out of range.";
 
         /// <summary>
         /// Error: Target point [X,Y] is out of range.
         /// </summary>
         public const string MatrixIsFull = "Error: Matrix is full. It is not possible to enter more rows.";
+
+        /// <summary>
+        /// Error: Rounds must be a valid integer greater than 0.
+        /// </summary>
+        public const string OutOfRangeRounds = "Error: Rounds must be a valid integer greater than 0.";
     }
 }

@@ -47,7 +47,8 @@ namespace GreenVsRed.Services
         /// Get target point dimensions X and Y and rounds to recalculate matrix.
         /// </summary>
         /// <param name="inputArgsStr">three integers separated with comma: target point X and Y and N rounds to recalculate matrix.</param>
-        void GetGameConditions(string inputArgsStr);
+        /// <returns>Returns true if all arguments are Ok.</returns>
+        bool GetGameConditions(string inputArgsStr);
 
         /// <summary>
         /// Gets how many times target point become green.

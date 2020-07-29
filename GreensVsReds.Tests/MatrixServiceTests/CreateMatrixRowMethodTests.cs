@@ -23,11 +23,11 @@
         [Fact]
         public void WorksCorrect()
         {
-            var inputArgsStr = $"201";
+            var inputArgsStr = $"101";
 
-            var expectedResult = this.MatrixService.CreateMatrixRow(inputArgsStr);
+            var result = this.MatrixService.CreateMatrixRow(inputArgsStr);
 
-            Assert.True(expectedResult);
+            Assert.True(result);
         }
 
         [Fact]
