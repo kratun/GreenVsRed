@@ -99,8 +99,16 @@
             EnterMatrixDimensions is an string for message: "Enter matrix dimensions "width, height": ".
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:GreenVsRed.Common.Constants.GeneralConstants.EnterMatrix" -->
-        <!-- Badly formed XML comment ignored for member "F:GreenVsRed.Common.Constants.GeneralConstants.EnterMatrixRow" -->
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.EnterMatrix">
+            <summary>
+            EnterMatrix is an string for message: "Please enter on each next {X-th} lines, {Y-th} digits({GreenNumber} for green or {RedNumber} for red)".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.EnterMatrixRow">
+            <summary>
+            EnterMatrixRow is an string for message: "Enter line currentLine}: ".
+            </summary>
+        </member>
         <member name="F:GreenVsRed.Common.Constants.GeneralConstants.MatrixDimension">
             <summary>
             MatrixDimension is an integer and hold constant for count of the matrix dimensions.

@@ -30,12 +30,12 @@ namespace GreenVsRed.Common.Constants
 
         /// <summary>
         /// EnterMatrix is an string for message: "Please enter on each next {X-th} lines, {Y-th} digits({GreenNumber} for green or {RedNumber} for red)".
-        /// </summary
+        /// </summary>
         public const string EnterMatrix = "Please enter on each next {0} lines, {1} digits({2} for green or {3} for red)";
 
         /// <summary>
         /// EnterMatrixRow is an string for message: "Enter line currentLine}: ".
-        /// </summary
+        /// </summary>
         public const string EnterMatrixRow = "Enter line {0}: ";
 
         /// <summary>
