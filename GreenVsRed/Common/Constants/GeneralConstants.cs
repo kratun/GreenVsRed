@@ -102,6 +102,8 @@ namespace GreenVsRed.Common.Constants
         /// </summary>
         public const string RedPointBecomeGreenCondition = "3, 6";
 
+        // Others
+
         /// <summary>
         /// ExpectedResult is a constant string used to show the result of the game.
         /// </summary>
@@ -128,5 +130,25 @@ namespace GreenVsRed.Common.Constants
         /// No is a constant string for answer: "no".
         /// </summary>
         public const string No = "no";
+
+        /// <summary>
+        /// Repeat is a constant string if you want tot start game again.
+        /// </summary>
+        public const string Repeat = "repeat";
+
+        /// <summary>
+        /// Restart is a constant string to restart game.
+        /// </summary>
+        public const string Restart = "restart";
+
+        /// <summary>
+        /// End is a constant string to canceling game.
+        /// </summary>
+        public const string End = "end";
+
+        /// <summary>
+        /// Repeat is a constant string if you want tot start game again.
+        /// </summary>
+        public const int StartPositionIndex = -1;
     }
 }

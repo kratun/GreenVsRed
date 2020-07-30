@@ -54,11 +54,25 @@ namespace GreenVsRed
             {
                 try
                 {
-                    this.TryGetMatrixDeimensions();
+                    var result = false;
 
-                    this.CreateMatrix();
+                    result = this.TryGetMatrixDeimensions();
+                    if (!result)
+                    {
+                        break;
+                    }
 
-                    this.GetTargetConditions();
+                    result = this.CreateMatrix();
+                    if (!result)
+                    {
+                        break;
+                    }
+
+                    result = this.GetTargetConditions();
+                    if (!result)
+                    {
+                        break;
+                    }
 
                     this.RecalculateMatrixNRounds();
 
@@ -99,7 +113,7 @@ namespace GreenVsRed
             this.MatrixService.RecalculateMatrixNRounds();
         }
 
-        private void GetTargetConditions()
+        private bool GetTargetConditions()
         {
             while (true)
             {
@@ -111,12 +125,20 @@ namespace GreenVsRed
                     this.WriteService.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
 
                     var inputArgsStr = this.ReadService.ReadLine();
+                    if (inputArgsStr.ToLower() == GeneralConstants.End)
+                    {
+                        return false;
+                    }
+                    else if (inputArgsStr.ToLower() == GeneralConstants.Repeat)
+                    {
+                        continue;
+                    }
 
                     this.MatrixService.GetGameConditions(inputArgsStr);
 
                     this.WriteService.WriteLine(GeneralConstants.CorrectArgsStr);
 
-                    break;
+                    return true;
                 }
                 catch (Exception e)
                 {
@@ -132,7 +154,7 @@ namespace GreenVsRed
             }
         }
 
-        private void CreateMatrix()
+        private bool CreateMatrix()
         {
             var matrixHeight = this.MatrixService.GetMatrixHeight();
             var matrixWidth = this.MatrixService.GetMatrixWidth();
@@ -145,6 +167,21 @@ namespace GreenVsRed
                 {
                     this.WriteService.Write(string.Format(GeneralConstants.EnterMatrixRow, i + 1));
                     var inputArgsStr = this.ReadService.ReadLine();
+
+                    if (inputArgsStr.ToLower() == GeneralConstants.End)
+                    {
+                        return false;
+                    }
+                    else if (inputArgsStr.ToLower() == GeneralConstants.Repeat)
+                    {
+                        i = GeneralConstants.StartPositionIndex;
+
+                        inputArgsStr = $"{matrixWidth},{matrixHeight}";
+                        this.MatrixService.GetMatrixDimensions(inputArgsStr);
+
+                        continue;
+                    }
+
                     this.MatrixService.CreateMatrixRow(inputArgsStr);
                 }
                 catch (ArgumentException e)
@@ -153,6 +190,8 @@ namespace GreenVsRed
                     i--;
                 }
             }
+
+            return true;
         }
 
         private bool TryGetMatrixDeimensions()
@@ -163,8 +202,17 @@ namespace GreenVsRed
 
                 try
                 {
-                    var inputArgsSTr = this.ReadService.ReadLine();
-                    this.MatrixService.GetMatrixDimensions(inputArgsSTr);
+                    var inputArgsStr = this.ReadService.ReadLine();
+                    if (inputArgsStr.ToLower() == GeneralConstants.End)
+                    {
+                        return false;
+                    }
+                    else if (inputArgsStr.ToLower() == GeneralConstants.Repeat)
+                    {
+                        continue;
+                    }
+
+                    this.MatrixService.GetMatrixDimensions(inputArgsStr);
                     return true;
                 }
                 catch (Exception e)
