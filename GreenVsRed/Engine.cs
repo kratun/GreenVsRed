@@ -54,24 +54,36 @@ namespace GreenVsRed
             {
                 try
                 {
-                    var result = false;
+                    var result = string.Empty;
 
                     result = this.TryGetMatrixDeimensions();
-                    if (!result)
+                    if (result == GeneralConstants.RepeatProcess)
                     {
-                        break;
+                        continue;
+                    }
+                    else if (result == GeneralConstants.EndGame)
+                    {
+                        return;
                     }
 
                     result = this.CreateMatrix();
-                    if (!result)
+                    if (result == GeneralConstants.RepeatProcess)
                     {
-                        break;
+                        continue;
+                    }
+                    else if (result == GeneralConstants.EndGame)
+                    {
+                        return;
                     }
 
                     result = this.GetTargetConditions();
-                    if (!result)
+                    if (result == GeneralConstants.RepeatProcess)
                     {
-                        break;
+                        continue;
+                    }
+                    else if (result == GeneralConstants.EndGame)
+                    {
+                        return;
                     }
 
                     this.RecalculateMatrixNRounds();
@@ -113,7 +125,7 @@ namespace GreenVsRed
             this.MatrixService.RecalculateMatrixNRounds();
         }
 
-        private bool GetTargetConditions()
+        private string GetTargetConditions()
         {
             while (true)
             {
@@ -125,11 +137,15 @@ namespace GreenVsRed
                     this.WriteService.Write(string.Format(GeneralConstants.EnterTargetConditions, matrixHeight, matrixWidth, GeneralConstants.GreenNumber, GeneralConstants.RedNumber));
 
                     var inputArgsStr = this.ReadService.ReadLine();
-                    if (inputArgsStr.ToLower() == GeneralConstants.End)
+                    if (inputArgsStr.ToLower() == GeneralConstants.EndGame)
                     {
-                        return false;
+                        return GeneralConstants.EndGame;
                     }
-                    else if (inputArgsStr.ToLower() == GeneralConstants.Repeat)
+                    else if (inputArgsStr.ToLower() == GeneralConstants.RestartGame)
+                    {
+                        return GeneralConstants.RestartGame;
+                    }
+                    else if (inputArgsStr.ToLower() == GeneralConstants.RepeatProcess)
                     {
                         continue;
                     }
@@ -138,7 +154,7 @@ namespace GreenVsRed
 
                     this.WriteService.WriteLine(GeneralConstants.CorrectArgsStr);
 
-                    return true;
+                    return string.Empty;
                 }
                 catch (Exception e)
                 {
@@ -154,7 +170,7 @@ namespace GreenVsRed
             }
         }
 
-        private bool CreateMatrix()
+        private string CreateMatrix()
         {
             var matrixHeight = this.MatrixService.GetMatrixHeight();
             var matrixWidth = this.MatrixService.GetMatrixWidth();
@@ -168,11 +184,15 @@ namespace GreenVsRed
                     this.WriteService.Write(string.Format(GeneralConstants.EnterMatrixRow, i + 1));
                     var inputArgsStr = this.ReadService.ReadLine();
 
-                    if (inputArgsStr.ToLower() == GeneralConstants.End)
+                    if (inputArgsStr.ToLower() == GeneralConstants.EndGame)
                     {
-                        return false;
+                        return GeneralConstants.EndGame;
                     }
-                    else if (inputArgsStr.ToLower() == GeneralConstants.Repeat)
+                    else if (inputArgsStr.ToLower() == GeneralConstants.RestartGame)
+                    {
+                        return GeneralConstants.RestartGame;
+                    }
+                    else if (inputArgsStr.ToLower() == GeneralConstants.RepeatProcess)
                     {
                         i = GeneralConstants.StartPositionIndex;
 
@@ -191,10 +211,10 @@ namespace GreenVsRed
                 }
             }
 
-            return true;
+            return string.Empty;
         }
 
-        private bool TryGetMatrixDeimensions()
+        private string TryGetMatrixDeimensions()
         {
             while (true)
             {
@@ -203,17 +223,21 @@ namespace GreenVsRed
                 try
                 {
                     var inputArgsStr = this.ReadService.ReadLine();
-                    if (inputArgsStr.ToLower() == GeneralConstants.End)
+                    if (inputArgsStr.ToLower() == GeneralConstants.EndGame)
                     {
-                        return false;
+                        return GeneralConstants.EndGame;
                     }
-                    else if (inputArgsStr.ToLower() == GeneralConstants.Repeat)
+                    else if (inputArgsStr.ToLower() == GeneralConstants.RestartGame)
+                    {
+                        return GeneralConstants.RestartGame;
+                    }
+                    else if (inputArgsStr.ToLower() == GeneralConstants.RepeatProcess)
                     {
                         continue;
                     }
 
                     this.MatrixService.GetMatrixDimensions(inputArgsStr);
-                    return true;
+                    return string.Empty;
                 }
                 catch (Exception e)
                 {

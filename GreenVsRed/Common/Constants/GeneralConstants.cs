@@ -134,17 +134,17 @@ namespace GreenVsRed.Common.Constants
         /// <summary>
         /// Repeat is a constant string if you want tot start game again.
         /// </summary>
-        public const string Repeat = "repeat";
+        public const string RepeatProcess = "repeat";
 
         /// <summary>
         /// Restart is a constant string to restart game.
         /// </summary>
-        public const string Restart = "restart";
+        public const string RestartGame = "restart";
 
         /// <summary>
         /// End is a constant string to canceling game.
         /// </summary>
-        public const string End = "end";
+        public const string EndGame = "end";
 
         /// <summary>
         /// Repeat is a constant string if you want tot start game again.
