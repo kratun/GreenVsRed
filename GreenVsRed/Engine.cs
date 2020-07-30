@@ -57,7 +57,7 @@ namespace GreenVsRed
                     var result = string.Empty;
 
                     result = this.TryGetMatrixDeimensions();
-                    if (result == GeneralConstants.RepeatProcess)
+                    if (result == GeneralConstants.RestartGame)
                     {
                         continue;
                     }
@@ -67,7 +67,7 @@ namespace GreenVsRed
                     }
 
                     result = this.CreateMatrix();
-                    if (result == GeneralConstants.RepeatProcess)
+                    if (result == GeneralConstants.RestartGame)
                     {
                         continue;
                     }
@@ -77,7 +77,7 @@ namespace GreenVsRed
                     }
 
                     result = this.GetTargetConditions();
-                    if (result == GeneralConstants.RepeatProcess)
+                    if (result == GeneralConstants.RestartGame)
                     {
                         continue;
                     }
