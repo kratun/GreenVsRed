@@ -1,0 +1,646 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GreenVsRed</name>
+    </assembly>
+    <members>
+        <member name="T:GreenVsRed.Common.Constants.ErrMsg">
+            <summary>
+            Static Class ErrMsg contains all error messages.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.NotAllowedCharacterInLine">
+            <summary>
+            Error: There are not allowed charecters in N-th line.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.MatrixDimentionException">
+            <summary>
+            Error: Please write width and height of the matrix in pattern "width, height".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.NotCorrectWidth">
+            <summary>
+            Error: Width must be an integer between MIN and MAX and can not be greater then height - "width, height".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.OutOfRangeWidth">
+            <summary>
+            Error: Width is out of range. It must be an integer between MIN and MAX and can not be greater then height - "width, height".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.NotCorrectHeight">
+            <summary>
+            Error: Height must be an integer between MIN and MAX.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.OutOfRangeHeight">
+            <summary>
+            Error: Height is out of range. It must be an integer between MIN and MAX and can not be greater then height - "width, height".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.NotCorrectDigitsCount">
+            <summary>
+            Error: The line must contains digits equal to the Matrix Width digits (1 for green or 0 for red) without space between.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.TargetConditionsException">
+            <summary>
+            Error: Tagret condition missmatch. Please write three integers separated by comma "," - first targe point "X", then target point "Y" and rounds (how many times you want to change matrix).
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.NotCorrectTargetPointY">
+            <summary>
+            Error: Point Y must be an integer between MIN and MAX.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.NotCorrectTargetPointX">
+            <summary>
+            Error: Point X must be an integer between MIN and MAX.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.NotCorrectRounds">
+            <summary>
+            Error: Rounds must be an integer between MIN and MAX.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.OutOfRangeTargetPoint">
+            <summary>
+            Error: Target point [X,Y] is out of range.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.MatrixIsFull">
+            <summary>
+            Error: Target point [X,Y] is out of range.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.ErrMsg.OutOfRangeRounds">
+            <summary>
+            Error: Rounds must be a valid integer greater than 0.
+            </summary>
+        </member>
+        <member name="T:GreenVsRed.Common.Constants.GeneralConstants">
+            <summary>
+            Static Class GeneralConstants contains all constants except error constants.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.GreenNumber">
+            <summary>
+            GreenNumber is an integer and hold constant for green number.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.RedNumber">
+            <summary>
+            RedNumber is an integer and hold constant for red number.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.EnterMatrixDimensions">
+            <summary>
+            EnterMatrixDimensions is an string for message: "Enter matrix dimensions "width, height": ".
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:GreenVsRed.Common.Constants.GeneralConstants.EnterMatrix" -->
+        <!-- Badly formed XML comment ignored for member "F:GreenVsRed.Common.Constants.GeneralConstants.EnterMatrixRow" -->
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.MatrixDimension">
+            <summary>
+            MatrixDimension is an integer and hold constant for count of the matrix dimensions.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.MinMatrixSize">
+            <summary>
+            MinMatrixSize is an integer and hold constant for minimum size of the matrix.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.MaxMatrixSize">
+            <summary>
+            MinMatrixSize is an integer and hold constant for maximum size of the matrix.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.EnterTargetConditions">
+            <summary>
+            EnterTargetConditions is a constant string for message: "Please write three integers separated by comma ",": first targe point "X", then target point "Y" and then rounds (how many times you want to change matrix): ".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.CorrectArgsStr">
+            <summary>
+            EnterTargetConditions is a constant string for message: "All inputs are correct.".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.MinTargetPointX">
+            <summary>
+            MinTargetPointX is an integer and hold constant for minimum X for target point.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.MinTargetPointY">
+            <summary>
+            MinTargetPointY is an integer and hold constant for minimum Y for target point.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.MinRounds">
+            <summary>
+            MinRounds is an integer and hold constant for minimum Rounds which is used to recalculate matrix.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.MaxRounds">
+            <summary>
+            MaxRounds is an integer and hold constant for maximum Rounds which is used to recalculate matrix.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.TargetConditionsCount">
+            <summary>
+            TargetConditionsCount is an constant integer. It represent count of last arguments.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.GreenPointStayGreenCondition">
+            <summary>
+            GreenPointStayGreenCondition is a constant string used for rule "green cell stay green" which contains numbers separated by comma ",".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.RedPointBecomeGreenCondition">
+            <summary>
+            RedPointBecomeGreenCondition is a constant string used for rule "red cell become green" which contains numbers separated by comma ",".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.ExpectedResult">
+            <summary>
+            ExpectedResult is a constant string used to show the result of the game.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.WaitCalculations">
+            <summary>
+            WaitCalculations is a constant string for message: "Please wait calculations!".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.WantToProceedStr">
+            <summary>
+            WantToProceedStr is a constant string for message: "Do you want to proceed? (Yes/No)".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.Yes">
+            <summary>
+            Yes is a constant string for answer: "yes".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.No">
+            <summary>
+            No is a constant string for answer: "no".
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.RepeatProcess">
+            <summary>
+            Repeat is a constant string if you want tot start game again.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.RestartGame">
+            <summary>
+            Restart is a constant string to restart game.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.EndGame">
+            <summary>
+            End is a constant string to canceling game.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Constants.GeneralConstants.StartPositionIndex">
+            <summary>
+            Repeat is a constant string if you want tot start game again.
+            </summary>
+        </member>
+        <member name="T:GreenVsRed.Common.Validations.RegXPattern">
+            <summary>
+            RegXPattern is a static class holds constant string used for regular expressions.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Validations.RegXPattern.FirstLine">
+            <summary>
+            FirstLine is a constant string pattern for matrix dimensions input.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Validations.RegXPattern.AllowedDigitsInMatrix">
+            <summary>
+            AllowedDigitsInMatrix is a constant string pattern for matrix row input.
+            </summary>
+        </member>
+        <member name="F:GreenVsRed.Common.Validations.RegXPattern.TargetConditions">
+            <summary>
+            TargetConditions is a constant string pattern for the last input - target conditions.
+            </summary>
+        </member>
+        <member name="T:GreenVsRed.Engine">
+            <summary>
+            Provide method to run game.
+            </summary>
+            <inheritdoc cref="T:GreenVsRed.IEngine"/>
+        </member>
+        <member name="M:GreenVsRed.Engine.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:GreenVsRed.Engine"/> class.
+            </summary>
+        </member>
+        <member name="P:GreenVsRed.Engine.WriteService">
+            <summary>
+            Service for writing text.
+            </summary>
+            <inheritdoc cref="T:GreenVsRed.Services.IWrite"/>
+        </member>
+        <member name="P:GreenVsRed.Engine.ReadService">
+            <summary>
+            Service for reading text.
+            </summary>
+            <inheritdoc cref="T:GreenVsRed.Services.IRead"/>
+        </member>
+        <member name="P:GreenVsRed.Engine.MatrixService">
+            <summary>
+            Gets or sets properties and methods that used to create and recalculating matrix.
+            </summary>
+        </member>
+        <member name="M:GreenVsRed.Engine.Run">
+            <summary>
+            Method that run game.
+            </summary>
+            <exception cref="T:System.Exception">Can throw exception.</exception>
+        </member>
+        <member name="T:GreenVsRed.IEngine">
+            <summary>
+            Provide method to run game.
+            </summary>
+        </member>
+        <member name="M:GreenVsRed.IEngine.Run">
+            <summary>
+            Method that run game.
+            </summary>
+            <exception cref="T:System.Exception">Can throw exception.</exception>
+        </member>
+        <member name="T:GreenVsRed.Models.IMatrix">
+            <summary>
+            Provide properties X (width) and Y (height) and collection for matrix state.
+            </summary>
+            <inheritdoc cref="T:GreenVsRed.Models.IPoint"/>
+        </member>
+        <member name="P:GreenVsRed.Models.IMatrix.State">
+            <summary>
+            Gets or sets collection for matrix state.
+            </summary>
+        </member>
+        <member name="T:GreenVsRed.Models.IPoint">
+            <summary>
+            Provide vector X and Y or width and height of a matrix.
+            </summary>
+        </member>
+        <member name="P:GreenVsRed.Models.IPoint.X">
+            <summary>
+            Gets a vector X or width of a matrix.
+            </summary>
+        </member>
+        <member name="P:GreenVsRed.Models.IPoint.Y">
+            <summary>
+            Gets a vector Y or height of a matrix.
+            </summary>
+        </member>
+        <member name="T:GreenVsRed.Models.IRound">
+            <summary>
+            Has int property with getter.
+            </summary>
+        </member>
+        <member name="P:GreenVsRed.Models.IRound.Rounds">
+            <summary>
+            Gets integer Rounds - matrix recalculation counts.
+            </summary>
+        </member>
+        <member name="T:GreenVsRed.Models.ITargetConditions">
+            <inheritdoc cref="T:GreenVsRed.Models.IPoint"/>
+            <inheritdoc cref="T:GreenVsRed.Models.IRound"/>
+        </member>
+        <member name="T:GreenVsRed.Models.Matrix">
+            <summary>
+            Provide properties X (width) and Y (height) and collection for matrix state.
+            </summary>
+            <inheritdoc cref="T:GreenVsRed.Models.Point"/>
+            <inheritdoc cref="T:GreenVsRed.Models.IMatrix"/>
+        </member>
+        <member name="M:GreenVsRed.Models.Matrix.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:GreenVsRed.Models.Matrix"/> class.
+            </summary>
+        </member>
+        <member name="M:GreenVsRed.Models.Matrix.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GreenVsRed.Models.Matrix"/> class.
+            </summary>
+            <param name="x">Matrix X (width).</param>
+            <param name="y">Matrix Y (heught).</param>
+        </member>
+        <member name="M:GreenVsRed.Models.Matrix.#ctor(System.Int32,System.Int32,System.Collections.Generic.List{System.Collections.Generic.List{System.Int32}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:GreenVsRed.Models.Matrix"/> class.
+            </summary>
+            <param name="x">Matrix X (width).</param>
+            <param name="y">Matrix Y (heught).</param>
+            <param name="state">Matrix collection.</param>
+        </member>
+        <member name="P:GreenVsRed.Models.Matrix.State">
+            <summary>
+            Gets or sets collection of greens and reds.
+            </summary>
+        </member>
+        <member name="T:GreenVsRed.Models.Point">
+            <summary>
+            Hold point X and Y provided by two methods.
+            </summary>
+            <inheritdoc cref="T:GreenVsRed.Models.IPoint"/>
+        </member>
+        <member name="M:GreenVsRed.Models.Point.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:GreenVsRed.Models.Point"/> class.
+            </summary>
+        </member>
+        <member name="M:GreenVsRed.Models.Point.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GreenVsRed.Models.Point"/> class.
+            </summary>
+            <param name="coordX">Point coordinate X.</param>
+            <param name="coordY">Point coordinate Y.</param>
+        </member>
+        <member name="P:GreenVsRed.Models.Point.X">
+            <inheritdoc cref="F:GreenVsRed.Models.Point.x"/>
+        </member>
+        <member name="P:GreenVsRed.Models.Point.Y">
+            <inheritdoc cref="F:GreenVsRed.Models.Point.y"/>
+        </member>
+        <member name="T:GreenVsRed.Models.TargetConditions">
+            <summary>
+            Provide Target Condition properties: Point and Rounds.
+            </summary>
+            <inheritdoc cref="T:GreenVsRed.Models.Point"/>
+            <inheritdoc cref="T:GreenVsRed.Models.ITargetConditions"/>
+        </member>
+        <member name="M:GreenVsRed.Models.TargetConditions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:GreenVsRed.Models.TargetConditions"/> class.
+            </summary>
+        </member>
+        <member name="M:GreenVsRed.Models.TargetConditions.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GreenVsRed.Models.TargetConditions"/> class.
+            </summary>
+            <param name="x">Target point X.</param>
+            <param name="y">Target point Y.</param>
+        </member>
+        <member name="M:GreenVsRed.Models.TargetConditions.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GreenVsRed.Models.TargetConditions"/> class.
+            </summary>
+            <param name="rounds">Matrix recalculation rounds.</param>
+        </member>
+        <member name="M:GreenVsRed.Models.TargetConditions.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:GreenVsRed.Models.TargetConditions"/> class.
+            </summary>
+            <param name="x">Target point X.</param>
+            <param name="y">Target point Y.</param>
+            <param name="rounds">Matrix recalculation rounds.</param>
+        </member>
+        <member name="P:GreenVsRed.Models.TargetConditions.Rounds">
+            <summary>
+            Gets matrix recalculation rounds.
+            </summary>
+        </member>
+        <member name="T:GreenVsRed.Program">
+            <summary>
+            Starting point.
+            </summary>
+        </member>
+        <member name="M:GreenVsRed.Program.Main">
+            <summary>
+            Method that run engine.
+            </summary>
+        </member>
+        <member name="T:GreenVsRed.Services.CommonService">
+            <summary>
+            Provides static methods for gameplay.
+            </summary>
+        </member>
+        <member name="M:GreenVsRed.Services.CommonService.WantToProceed">
+            <summary>
+            Ask "Do you want to proceed?" and wainting for response "Yes" or "No".
+            </summary>
+            <returns>True or false.</returns>
+        </member>
+        <member name="T:GreenVsRed.Services.IMatrixService">
+            <summary>
+            Provides methods that create and recalculate matrix N times.
+            </summary>
+        </member>
+        <member name="M:GreenVsRed.Services.IMatrixService.GetMatrixDimensions(System.String)">
+            <summary>
+            Get matrix X (width) and Y (height).
+            </summary>
+            <param name="inputArgsStr">A string contains two integers separated by comma.</param>
+            <exception cref="!:ArgumentException">Thrown when line
+            contains not allowed character or not enougth parameters.</exception>
+            <exception cref="!:ArgumentOutOfRangeException">Thrown when X (width) or Y (heght) are out of game range.</exception>
+        </member>
+        <member name="M:GreenVsRed.Services.IMatrixService.GetMatrixHeight">
+            <summary>
+            Gets matrix Y (height).
+            </summary>
+            <returns>Matrix height.</returns>
+        </member>
+        <member name="M:GreenVsRed.Services.IMatrixService.GetMatrixWidth">
+            <summary>
+            Gets matrix Y (width).
+            </summary>
+            <returns>Matrix width.</returns>
+        </member>
+        <member name="M:GreenVsRed.Services.IMatrixService.CreateMatrixRow(System.String)">
+            <summary>
+            Create matrix row from input.
+            </summary>
+            <param name="inputArgsStr">Matrix row as string.</param>
+            <returns>True if matrix row is added.</returns>
+            <exception cref="!:ArgumentException">Throw when input contains not allowed charakters.</exception>
+            <exception cref="!:ArgumentOutOfRangeException">Throw when the row constains less/more characters or the matrix is full.</exception>
+        </member>
+        <member name="M:GreenVsRed.Services.IMatrixService.GetGameConditions(System.String)">
+            <summary>
+            Get target point dimensions X and Y and rounds to recalculate matrix.
+            </summary>
+            <param name="inputArgsStr">three integers separated with comma: target point X and Y and N rounds to recalculate matrix.</param>
+            <returns>Returns true if all arguments are Ok.</returns>
+        </member>
+        <member name="M:GreenVsRed.Services.IMatrixService.GetTargetPointGreenColorsCount">
+            <summary>
+            Gets how many times target point become green.
+            </summary>
+            <returns>How many time taget point become green.</returns>
+        </member>
+        <member name="M:GreenVsRed.Services.IMatrixService.RecalculateMatrixNRounds">
+            <summary>
+            Method who recalculate Matrix N rounds and return how many times the target point become green.
+            </summary>
+            <returns>Return true if recalslation finished.</returns>
+        </member>
+        <member name="T:GreenVsRed.Services.IRead">
+            <summary>
+            Provide read methods.
+            </summary>
+        </member>
+        <member name="M:GreenVsRed.Services.IRead.ReadLine">
+            <summary>
+            Read a single line.
+            </summary>
+            <returns>Read a single line and return it's trimmed value.</returns>
+        </member>
+        <member name="T:GreenVsRed.Services.IWrite">
+            <summary>
+            Provide methods that write.
+            </summary>
+        </member>
+        <member name="M:GreenVsRed.Services.IWrite.Write(System.String)">
+            <summary>
+            Writes the specified string value to the standard output stream.
+            </summary>
+            <param name="outputMsg">The value to write.</param>
+        </member>
+        <member name="M:GreenVsRed.Services.IWrite.WriteLine(System.String)">
+            <summary>
+            Writes the specified string value, followed by the current line terminator, to
+                the standard output stream.
+            </summary>
+            <param name="outputMsg">The value to write.</param>
+        </member>
+        <member name="T:GreenVsRed.Services.MatrixService">
+            <summary>
+            Provides properties and methods that create and recalculating matrix N times.
+            </summary>
+            <inheritdoc cref="T:GreenVsRed.Services.IMatrixService"/>
+        </member>
+        <member name="M:GreenVsRed.Services.MatrixService.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:GreenVsRed.Services.MatrixService"/> class.
+            </summary>
+        </member>
+        <member name="P:GreenVsRed.Services.MatrixService.TargetPointColors">
+            <summary>
+            Gets or sets collection of each target point color during recalculation.
+            </summary>
+            <inheritdoc cref="T:System.Collections.Generic.List`1"/>
+        </member>
+        <member name="P:GreenVsRed.Services.MatrixService.Matrix">
+            <summary>
+            Gets or sets current matrix state.
+            </summary>
+            <inheritdoc cref="T:System.Collections.Generic.List`1"/>
+        </member>
+        <member name="M:GreenVsRed.Services.MatrixService.GetMatrixDimensions(System.String)">
+            <summary>
+            Get matrix X (width) and Y (height).
+            </summary>
+            <param name="inputArgsStr">A string contains two integers separated by comma.</param>
+            <exception cref="T:System.ArgumentException">Thrown when line
+            contains not allowed character or not enougth parameters.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when X (width) or Y (heght) are out of game range.</exception>
+        </member>
+        <member name="M:GreenVsRed.Services.MatrixService.GetMatrixHeight">
+            <summary>
+            Gets matrix Y (height).
+            </summary>
+            <returns>Matrix height.</returns>
+        </member>
+        <member name="M:GreenVsRed.Services.MatrixService.GetMatrixWidth">
+            <summary>
+            Gets matrix Y (width).
+            </summary>
+            <returns>Matrix width.</returns>
+        </member>
+        <member name="M:GreenVsRed.Services.MatrixService.CreateMatrixRow(System.String)">
+            <summary>
+            Create matrix from the input.
+            </summary>
+            <param name="inputArgsStr">Matrix row as string.</param>
+            <returns>True if matrix row is add.</returns>
+            <exception cref="T:System.ArgumentException">Throw when input contains not allowed charakters.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Throw when the row constains less/more characters or the matrix is full.</exception>
+        </member>
+        <member name="M:GreenVsRed.Services.MatrixService.GetGameConditions(System.String)">
+            <summary>
+            Get target point dimensions X and Y and rounds to recalculate matrix.
+            </summary>
+            <param name="inputArgsStr">three integers separated with comma: target point X and Y and N rounds to recalculate matrix.</param>
+            <returns>Returns true if all arguments are Ok.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when line
+            contains not enougth or correct parameters.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when
+            point with coordX and coordY does not exist.</exception>
+        </member>
+        <member name="M:GreenVsRed.Services.MatrixService.RecalculateMatrixNRounds">
+            <summary>
+            Method who recalculate Matrix N rounds and return how many times the target point become green.
+            </summary>
+            <param name="coordX">Point coordinate X.</param>
+            <param name="coordY">Point coordinate Y.</param>
+            <param name="rounds">Matrix recalculation rounds.</param>
+            <returns>Return true if recalslation finished.</returns>
+        </member>
+        <member name="M:GreenVsRed.Services.MatrixService.GetTargetPointGreenColorsCount">
+            <summary>
+            Gets how many times target point become green.
+            </summary>
+            <returns>How many time taget point become green.</returns>
+        </member>
+        <member name="M:GreenVsRed.Services.MatrixService.TryGetPoint(System.String)">
+            <exception cref="T:System.ArgumentException">Thrown when line
+            contains not allowed character or not enougth parameters.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when X (width) or Y (heght) are out of game range or X>Y.</exception>
+        </member>
+        <member name="M:GreenVsRed.Services.MatrixService.ValidateTargetConditions(System.String,System.Int32,System.Int32)">
+            <exception cref="T:System.ArgumentException">Thrown when line
+            contains not enougth or correct parameters.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when
+            point with coordX and coordY does not exist.</exception>
+        </member>
+        <member name="M:GreenVsRed.Services.MatrixService.IsGreen(System.Int32,System.Int32)">
+            <remarks>
+            This method receive two integer (point[x,y]) and return boolean is it green or not.
+            </remarks>
+            <value>
+            Point coordination [row,col] and return boolean is it green or not.
+            </value>
+            <param name="x">An integer which represent point vector X.</param>
+            <param name="y">An integer which represent point vector Y.</param>
+            <return>
+            Boolean true if point color is green.
+            </return>
+        </member>
+        <member name="T:GreenVsRed.Services.ReadService">
+            <summary>
+            Provide read methods.
+            </summary>
+            <inheritdoc cref="T:GreenVsRed.Services.IRead"/>
+        </member>
+        <member name="M:GreenVsRed.Services.ReadService.ReadLine">
+            <summary>
+            Read a single line.
+            </summary>
+            <returns>Read a single line and return it's trimmed value.</returns>
+        </member>
+        <member name="T:GreenVsRed.Services.WriteService">
+            <summary>
+            Provide methods that write.
+            </summary>
+        </member>
+        <member name="M:GreenVsRed.Services.WriteService.Write(System.String)">
+            <summary>
+            Writes the specified string value to the standard output stream.
+            </summary>
+            <param name="outputMsg">The value to write.</param>
+        </member>
+        <member name="M:GreenVsRed.Services.WriteService.WriteLine(System.String)">
+            <summary>
+            Writes the specified string value, followed by the current line terminator, to
+                the standard output stream.
+            </summary>
+            <param name="outputMsg">The value to write.</param>
+        </member>
+    </members>
+</doc>
