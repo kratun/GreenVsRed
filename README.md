@@ -27,5 +27,3 @@ The game will finish when you answer "No" to the question "Do you want to procee
 
 ## Need Help
 If you have any questions about application or if you can not download video file, please contact me.</br>
-email: mitevdv@abv.bg</br>
-mobile: +359 889 188 779</br>

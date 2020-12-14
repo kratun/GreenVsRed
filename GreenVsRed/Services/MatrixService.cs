@@ -24,9 +24,7 @@ namespace GreenVsRed.Services
         /// </summary>
         public MatrixService()
         {
-            this.TargetPointColors = new List<int>();
-            this.Matrix = new Matrix();
-            this.TargetConditions = new TargetConditions();
+            this.Reset();
         }
 
         private ITargetConditions TargetConditions { get; set; }
@@ -72,6 +70,16 @@ namespace GreenVsRed.Services
         public int GetMatrixWidth()
         {
             return this.Matrix.X;
+        }
+
+        /// <summary>
+        /// Reset game.
+        /// </summary>
+        public void Reset()
+        {
+            this.TargetPointColors = new List<int>();
+            this.Matrix = new Matrix();
+            this.TargetConditions = new TargetConditions();
         }
 
         /// <summary>
@@ -134,9 +142,6 @@ namespace GreenVsRed.Services
         /// <summary>
         /// Method who recalculate Matrix N rounds and return how many times the target point become green.
         /// </summary>
-        /// <param name="coordX">Point coordinate X.</param>
-        /// <param name="coordY">Point coordinate Y.</param>
-        /// <param name="rounds">Matrix recalculation rounds.</param>
         /// <returns>Return true if recalslation finished.</returns>
         public bool RecalculateMatrixNRounds()
         {

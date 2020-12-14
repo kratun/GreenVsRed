@@ -33,6 +33,11 @@ namespace GreenVsRed.Services
         /// </summary>
         /// <returns>Matrix width.</returns>
         int GetMatrixWidth();
+       
+        /// <summary>
+        /// Reset game.
+        /// </summary>
+        void Reset();
 
         /// <summary>
         /// Create matrix row from input.

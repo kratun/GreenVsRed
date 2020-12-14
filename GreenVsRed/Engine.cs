@@ -107,7 +107,7 @@ namespace GreenVsRed
                     break;
                 }
 
-                this.MatrixService = new MatrixService();
+                this.MatrixService.Reset();
             }
         }
 
